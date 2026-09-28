@@ -162,9 +162,52 @@ footer{margin-top:28px;color:var(--muted);font-size:12.5px;max-width:760px}
 .settings .row3{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1.6fr)}
 @media (max-width:700px){.settings .row3{grid-template-columns:minmax(0,1fr)}}
 .settings a{color:var(--blue)}
+.kmodal{position:fixed;inset:0;background:rgba(10,16,30,.55);display:grid;place-items:center;padding:16px;z-index:50}
+.kcard{background:var(--paper);color:var(--ink);border-radius:14px;max-width:520px;width:100%;padding:22px 22px 18px;box-shadow:0 20px 60px rgba(0,0,0,.35);display:grid;gap:14px;max-height:calc(100vh - 32px);overflow:auto}
+.kcard h2{font:800 22px/1.15 var(--display);margin:0}
+.kcard p{margin:0;color:var(--muted);font-size:14px}
+.ksteps{margin:0;padding-left:0;list-style:none;display:grid;gap:8px;counter-reset:k}
+.ksteps li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;font-size:14px}
+.ksteps li::before{counter-increment:k;content:counter(k);width:26px;height:26px;border-radius:50%;background:var(--accent);color:#1A1200;font:700 13px/26px var(--ui);text-align:center}
+.kbig{font-size:16px;padding:14px 16px;text-decoration:none}
+.kcard input{font-size:15px;padding:12px}
+.klinks{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px}
+.klinks button{background:none;border:0;color:var(--blue);cursor:pointer;font:inherit;padding:0;text-decoration:underline}
 </style>
 </head>
 <body>
+<div class="kmodal" id="kModal" hidden role="dialog" aria-modal="true" aria-labelledby="kTitle">
+  <div class="kcard">
+    <h2 id="kTitle">Connect your free AI key</h2>
+    <p>This planner writes lessons with Google's free Gemini AI. You only do this once on this device. Your key stays in this browser.</p>
+    <ol class="ksteps">
+      <li><span>Click the button below. Google's key page opens in a new tab. Sign in with your Gmail.</span></li>
+      <li><span>Click <b>Create API key</b>, then <b>Copy</b>. It starts with <b>AIza</b>.</span></li>
+      <li><span>Come back here and tap <b>Paste my key</b>. If your browser asks, tap <b>Allow</b>. It connects automatically.</span></li>
+    </ol>
+    <a class="btn primary kbig" id="kGet" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Get my free key</a>
+    <button class="btn kbig" type="button" id="kPaste" hidden>Paste my key</button>
+    <label>Or paste it here yourself <input id="kKey" type="password" autocomplete="off" placeholder="AIza…"></label>
+    <div class="status" id="kStatus" role="status" aria-live="polite"></div>
+    <div class="klinks"><button type="button" id="kSkip">Just look at the samples for now</button><button type="button" id="kAdv">Advanced settings</button></div>
+  </div>
+</div>
+<div class="kmodal" id="gmModal" hidden role="dialog" aria-modal="true" aria-labelledby="gmTitle">
+  <div class="kcard">
+    <h2 id="gmTitle">Use my Gemini</h2>
+    <p id="gmSub">Works with the Gemini in your DepEd (@deped.gov.ph) or personal Google account. No key needed.</p>
+    <ol class="ksteps">
+      <li><span><b>Copy the instruction.</b> It holds your lesson details. <button class="btn" type="button" id="gmCopy" style="margin-top:6px;width:100%">Copy instruction</button></span></li>
+      <li><span><b>Open Gemini</b>, paste it in the chat box and press Enter. Wait until Gemini finishes. <a class="btn" id="gmOpen" href="https://gemini.google.com/app" target="_blank" rel="noopener" style="margin-top:6px;width:100%;text-decoration:none">Open Gemini</a></span></li>
+      <li><span><b>Copy Gemini's whole answer</b> (the copy icon under the answer), come back here and paste it below.</span></li>
+    </ol>
+    <button class="btn primary kbig" type="button" id="gmPaste">Paste Gemini's answer</button>
+    <label>Or paste it here yourself <textarea id="gmText" rows="4" placeholder="Paste Gemini's answer here"></textarea></label>
+    <button class="btn" type="button" id="gmUse">Use this answer</button>
+    <div class="status" id="gmStatus" role="status" aria-live="polite"></div>
+    <div class="klinks"><button type="button" id="gmClose">Close</button><span></span></div>
+  </div>
+</div>
 <div class="wrap">
   <header class="top">
     <div class="brand">
@@ -182,10 +225,10 @@ footer{margin-top:28px;color:var(--muted);font-size:12.5px;max-width:760px}
   </header>
 
   <section class="settings" id="aiPanel" hidden aria-labelledby="aih">
-    <h2 id="aih">Connect your AI key</h2>
-    <p>This site uses your own AI key to write plans. The key is saved only in this browser and is sent only to the AI company you pick. Google Gemini has a free tier: get a key at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>.</p>
+    <h2 id="aih">AI settings</h2>
+    <p>The built-in AI needs no key: the first time you generate, a small sign-in window from Puter (the free AI service this site uses) appears once. Optional: use your own Google Gemini key instead. It is saved only in this browser. Get one at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>.</p>
     <div class="row3">
-      <label>Provider <select id="aiProv"><option value="gemini">Google Gemini (free tier)</option><option value="anthropic">Anthropic Claude API</option></select></label>
+      <label>Provider <select id="aiProv"><option value="puter">Built-in AI (no key needed)</option><option value="gemini">Google Gemini (your own key)</option><option value="anthropic">Anthropic Claude API</option></select></label>
       <label>Model <input id="aiModel" autocomplete="off"></label>
       <label>API key <input id="aiKey" type="password" autocomplete="off" placeholder="Paste your key"></label>
     </div>
@@ -246,6 +289,7 @@ footer{margin-top:28px;color:var(--muted);font-size:12.5px;max-width:760px}
       <div class="toolrow">
         <div class="opts">
           <button class="btn primary" type="button" id="gen">Generate lesson plan</button>
+          <button class="btn" type="button" id="gmBtn" title="Use the Gemini in your DepEd or Google account">Use my Gemini</button>
           <button class="btn" type="button" id="stop" hidden>Stop</button>
           <label id="o-dll" hidden>Days in the week <select id="dlldays"><option>3</option><option selected>4</option><option>5</option></select></label>
           <label id="o-slides" hidden>Slides <select id="slidecount"><option>8</option><option selected>12</option><option>16</option></select></label>
@@ -285,16 +329,39 @@ footer{margin-top:28px;color:var(--muted);font-size:12.5px;max-width:760px}
 
 <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<script src="https://js.puter.com/v2/"></script>
 <script>
 /* ---------- Standalone AI + download bridge (replaces Claude runtime) ---------- */
 (function(){
- const DEF={gemini:"gemini-3.5-flash",anthropic:"claude-sonnet-5"};
+ const DEF={puter:"google/gemini-3.8-flash",gemini:"gemini-3.5-flash",anthropic:"claude-sonnet-5"};
  const ls={get:k=>{try{return localStorage.getItem(k)||""}catch(e){return ""}},set:(k,v)=>{try{v?localStorage.setItem(k,v):localStorage.removeItem(k)}catch(e){}}};
- const cfg=()=>{const prov=ls.get("ai-prov")||"gemini";return {prov,model:ls.get("ai-model-"+prov)||DEF[prov],key:ls.get("ai-key-"+prov)}};
+ const cfg=()=>{const prov=ls.get("ai-prov")||"puter";return {prov,model:ls.get("ai-model-"+prov)||DEF[prov],key:ls.get("ai-key-"+prov)}};
  function toText(input){return typeof input==="string"?input:input.map(t=>(t.role==="assistant"?"Assistant: ":"")+t.content).join("\n\n")}
+ async function callPuter(text,c,opts){
+  if(!window.puter||!puter.ai)throw {code:"network",message:"AI service did not load"};
+  if(opts.signal&&opts.signal.aborted)throw {code:"cancelled"};
+  try{if(puter.auth&&puter.auth.isSignedIn&&!puter.auth.isSignedIn())await puter.auth.signIn({attempt_temp_user_creation:true});}
+  catch(e){const m=String((e&&(e.error||e.code||e.message))||e);throw {code:/popup/i.test(m)?"popup_blocked":/closed/i.test(m)?"signin_closed":"signin_failed",message:m}}
+  const ask=model=>puter.ai.chat(text,model?{model,max_tokens:16000}:{max_tokens:16000});
+  const abort=new Promise((_,rej)=>{if(opts.signal)opts.signal.addEventListener("abort",()=>rej({code:"cancelled"}),{once:true})});
+  let r;
+  try{r=await Promise.race([ask(c.model),abort])}
+  catch(e){if(e&&e.code==="cancelled")throw e;const m=String((e&&(e.error&&e.error.message||e.message||e.error))||e);
+   if(/model/i.test(m)&&!/credit|fund|balance|limit/i.test(m)){try{r=await Promise.race([ask(null),abort])}catch(e2){if(e2&&e2.code==="cancelled")throw e2;throw {code:"upstream_error",message:String(e2&&e2.message||e2)}}}
+   else if(/credit|fund|balance|insufficient|quota|limit/i.test(m))throw {code:"out_of_credit",message:m};
+   else throw {code:"upstream_error",message:m}}
+  const cont=r&&r.message?r.message.content:r;
+  let out=Array.isArray(cont)?cont.map(p=>typeof p==="string"?p:(p&&p.text)||"").join(""):String(cont??"");
+  if(!out.trim()&&r&&typeof r.toString==="function")out=String(r.toString());
+  if(!out.trim()||out==="[object Object]")throw {code:"empty_completion"};
+  if(opts.onText)try{opts.onText({text:out,delta:out})}catch(e){}
+  return {text:out,truncated:(r&&r.finish_reason)==="length",modelTierApplied:"default"};
+ }
  async function call(input,opts={}){
-  const c=cfg();if(!c.key)throw {code:"no_key",message:"No API key"};
-  const text=toText(input);let res;
+  const c=cfg();const text=toText(input);
+  if(c.prov==="puter")return callPuter(text,c,opts);
+  if(!c.key)throw {code:"no_key",message:"No API key"};
+  let res;
   try{
    if(c.prov==="gemini"){
     res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(c.model)}:generateContent`,{method:"POST",signal:opts.signal,
@@ -329,20 +396,45 @@ footer{margin-top:28px;color:var(--muted);font-size:12.5px;max-width:760px}
  const downloads={save:async({filename,data})=>{const blob=data instanceof Blob?data:new Blob([data]);const url=URL.createObjectURL(blob);
   const a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);return {status:"saved"}}};
  window.claude={use:async n=>n==="sample"?sample:n==="downloads"?downloads:null};
- window.__aiCfg=cfg;window.__aiCall=call;
+ window.__aiCfg=cfg;window.__aiCall=call;window.__parseJSON=parseJSON;
  // settings panel
  const $=id=>document.getElementById(id);
- function fillPanel(){const c=cfg();$("aiProv").value=c.prov;$("aiModel").value=c.model;$("aiKey").value=c.key}
- window.openAI=msg=>{fillPanel();$("aiPanel").hidden=false;if(msg){$("aiStatus").className="status err";$("aiStatus").textContent=msg}$("aiKey").focus();$("aiPanel").scrollIntoView({behavior:"smooth",block:"start"})};
+ function fillPanel(){const c=cfg();$("aiProv").value=c.prov;$("aiModel").value=c.model;$("aiKey").value=c.key||"";const l=$("aiKey").closest("label");if(l)l.hidden=c.prov==="puter"}
+ const kShow=msg=>{$("kModal").hidden=false;$("kKey").value="";$("kStatus").className="status"+(msg?" err":"");$("kStatus").textContent=msg||"";setTimeout(()=>$("kKey").focus(),50)};
+ window.openAI=msg=>{if(cfg().prov==="gemini"||!cfg().key)kShow(msg);else{fillPanel();$("aiPanel").hidden=false;if(msg){$("aiStatus").className="status err";$("aiStatus").textContent=msg}$("aiPanel").scrollIntoView({behavior:"smooth",block:"start"})}};
+ let kBusy=false;
+ async function kTry(){const v=$("kKey").value.trim();if(kBusy||v.length<20)return;kBusy=true;
+  ls.set("ai-prov","gemini");ls.set("ai-key-gemini",v);if(!ls.get("ai-model-gemini"))ls.set("ai-model-gemini",DEF.gemini);
+  $("kStatus").className="status";$("kStatus").textContent="Connecting…";
+  try{await call("Reply with the single word OK.");$("kStatus").className="status ok";$("kStatus").textContent="Connected! You can generate now.";fillPanel();setTimeout(()=>{$("kModal").hidden=true},1200)}
+  catch(e){if(e.code==="bad_key"||e.code==="no_key")ls.set("ai-key-gemini","");$("kStatus").className="status err";
+   $("kStatus").textContent=e.code==="bad_key"?"That key didn't work. Copy it again from Google and paste the whole key.":e.code==="model_not_found"?"Key saved, but the AI model name needs updating. Click Advanced settings.":e.code==="rate_limited"?"Key saved. Google says to wait a minute before using it.":"Could not connect. Check your internet and paste again."}
+  finally{kBusy=false}}
  document.addEventListener("DOMContentLoaded",()=>{
-  fillPanel();if(!cfg().key)$("aiPanel").hidden=false;
+  fillPanel();
+  let skipped=false;try{skipped=sessionStorage.getItem("k-skip")==="1"}catch(e){}
+  if(cfg().prov!=="puter"&&!cfg().key&&!skipped)kShow();
+  $("kKey").addEventListener("paste",()=>setTimeout(kTry,30));
+  const canRead=!!(navigator.clipboard&&navigator.clipboard.readText);
+  $("kPaste").hidden=!canRead;
+  $("kPaste").onclick=async()=>{try{const t=(await navigator.clipboard.readText()||"").trim();
+    if(!/^AIza[\w-]{20,}$/.test(t)){$("kStatus").className="status err";$("kStatus").textContent=t?"What you copied doesn't look like a key. Copy the key from Google (it starts with AIza), then tap Paste my key again.":"Nothing copied yet. Copy your key from Google first.";return}
+    $("kKey").value=t;kTry();}
+   catch(e){$("kStatus").className="status err";$("kStatus").textContent="Your browser blocked automatic paste. Long-press or right-click the box below and choose Paste."}};
+  window.addEventListener("focus",()=>{if(!$("kModal").hidden&&!$("kKey").value)$("kPaste").focus()});
+  $("kKey").addEventListener("keydown",e=>{if(e.key==="Enter")kTry()});
+  $("kKey").addEventListener("change",kTry);
+  $("kSkip").onclick=()=>{$("kModal").hidden=true;try{sessionStorage.setItem("k-skip","1")}catch(e){}};
+  $("kAdv").onclick=()=>{$("kModal").hidden=true;fillPanel();$("aiPanel").hidden=false;$("aiPanel").scrollIntoView({behavior:"smooth"})};
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("kModal").hidden)$("kSkip").click()});
   $("aiBtn").onclick=()=>{$("aiPanel").hidden=!$("aiPanel").hidden;fillPanel()};
-  $("aiProv").onchange=()=>{const p=$("aiProv").value;$("aiModel").value=ls.get("ai-model-"+p)||DEF[p];$("aiKey").value=ls.get("ai-key-"+p)};
+  const keyVis=()=>{$("aiKey").closest("label").hidden=$("aiProv").value==="puter"};keyVis();
+  $("aiProv").onchange=()=>{const p=$("aiProv").value;$("aiModel").value=ls.get("ai-model-"+p)||DEF[p];$("aiKey").value=ls.get("ai-key-"+p);keyVis()};
   $("aiClear").onclick=()=>{const p=$("aiProv").value;ls.set("ai-key-"+p,"");$("aiKey").value="";$("aiStatus").className="status";$("aiStatus").textContent="Key removed from this browser."};
-  $("aiSave").onclick=async()=>{const p=$("aiProv").value;ls.set("ai-prov",p);ls.set("ai-model-"+p,$("aiModel").value.trim()||DEF[p]);ls.set("ai-key-"+p,$("aiKey").value.trim());
+  $("aiSave").onclick=async()=>{const p=$("aiProv").value;ls.set("ai-prov",p);ls.set("ai-model-"+p,$("aiModel").value.trim()||DEF[p]);if(p!=="puter")ls.set("ai-key-"+p,$("aiKey").value.trim());
    $("aiStatus").className="status";$("aiStatus").textContent="Testing…";
    try{await call('Reply with the single word OK.');$("aiStatus").className="status ok";$("aiStatus").textContent="Connected. You can generate now.";setTimeout(()=>{$("aiPanel").hidden=true},1500)}
-   catch(e){$("aiStatus").className="status err";$("aiStatus").textContent=e.code==="no_key"?"Paste a key first.":e.code==="bad_key"?"The key was rejected. Check that you copied it fully.":e.code==="model_not_found"?"That model name was not found. Check the provider's model list and type a current one.":e.code==="rate_limited"?"Key works but you hit the rate limit. Wait a minute.":"Could not connect: "+(e.message||e.code)}};
+   catch(e){$("aiStatus").className="status err";$("aiStatus").textContent=e.code==="popup_blocked"?"Your browser blocked the sign-in window. Allow pop-ups for this site and try again.":e.code==="signin_closed"?"The sign-in window was closed. Click Save and test again.":e.code==="no_key"?"Paste a key first.":e.code==="bad_key"?"The key was rejected. Check that you copied it fully.":e.code==="model_not_found"?"That model name was not found. Check the provider's model list and type a current one.":e.code==="rate_limited"?"Key works but you hit the rate limit. Wait a minute.":"Could not connect: "+(e.message||e.code)}};
  });
 })();
 </script>
@@ -723,7 +815,7 @@ function busy(on,label){
  clearInterval(timer);
  if(on){const t0=Date.now();const tick=()=>{$("status").className="status mainstatus";$("status").innerHTML=`<span class="thinking"><span class="lamp"></span>${label} · ${Math.round((Date.now()-t0)/1000)}s (usually under a minute)</span>`};tick();timer=setInterval(tick,1000)}
 }
-const ERR={no_key:"Add your AI key first (AI settings, top right).",bad_key:"Your AI key was rejected. Open AI settings and check it.",model_not_found:"The AI model name was not found. Open AI settings and change it.",network:"Could not reach the AI service. Check your internet connection.",not_granted:"Claude access was not allowed for this page, so nothing can be generated here.",sampling_disabled:"Claude is not available for this account.",rate_limited:"Too many requests right now. Wait a minute and try again.",session_expired:"Your session expired. Sign in again, then retry.",refused:"The AI declined this request. Try rewording the topic.",invalid_json:"The draft came back in the wrong shape. Press Generate again.",prompt_too_large:"The input is too long. Shorten the competency or context."};
+const ERR={popup_blocked:"Your browser blocked the AI sign-in window. Allow pop-ups for this site, then click Generate again.",signin_closed:"The AI sign-in window was closed. Click Generate again and finish signing in (it only happens once).",signin_failed:"The AI sign-in did not finish. Click Generate again.",out_of_credit:"Your free AI usage for now is used up. Try again later, or add your own free Gemini key in AI settings.",no_key:"Add your AI key first (AI settings, top right).",bad_key:"Your AI key was rejected. Open AI settings and check it.",model_not_found:"The AI model name was not found. Open AI settings and change it.",network:"Could not reach the AI service. Check your internet connection and reload the page.",not_granted:"Claude access was not allowed for this page, so nothing can be generated here.",sampling_disabled:"Claude is not available for this account.",rate_limited:"Too many requests right now. Wait a minute and try again.",session_expired:"Your session expired. Sign in again, then retry.",refused:"The AI declined this request. Try rewording the topic.",invalid_json:"The draft came back in the wrong shape. Press Generate again.",prompt_too_large:"The input is too long. Shorten the competency or context."};
 const NAMES={plan:"lesson plan",dll:"weekly DLL",slides:"slides",act:"activity",quiz:"weekly quiz"};
 async function run(k,extra,label){
  state.form=readForm();save();
@@ -741,7 +833,7 @@ async function run(k,extra,label){
  }catch(e){busy(false);
   if(e&&e.code==="cancelled"){setStatus("Stopped.");return}
   if(e&&["no_key","bad_key","model_not_found"].includes(e.code))window.openAI&&window.openAI(ERR[e.code]);
-  setStatus(ERR[e&&e.code]||"Something went wrong while drafting. Press Generate to try again.","err")}
+  setStatus(ERR[e&&e.code]||("Something went wrong while drafting. Press Generate to try again."+((e&&(e.message||e.code))?" (Details: "+String(e.message||e.code).slice(0,160)+")":"")),"err")}
 }
 $("stop").onclick=()=>ctl?.abort();
 $("gen").onclick=()=>run(state.tab,"",({plan:"Drafting your lesson plan",dll:"Drafting your weekly DLL",slides:"Writing your slides",act:"Making your activity",quiz:"Writing your weekly quiz"})[state.tab]);
@@ -902,6 +994,28 @@ $("dl").onclick=async()=>{
   await dl.save({filename:name,data:blob});setStatus("Saved "+name,"ok");}
  catch(e){if(e&&e.code==="declined")return;setStatus(e&&e.message==="nolib"?"The file exporter did not load. Reload the page or use Copy text.":"The download did not complete. Try again or use Copy text.","err")}
 };
+
+/* ---------- Use my Gemini (copy and paste mode) ---------- */
+let gmKind="plan",gmPrompt="";
+const gmSet=(t,c)=>{$("gmStatus").className="status"+(c?" "+c:"");$("gmStatus").textContent=t};
+async function gmCopyNow(){try{await navigator.clipboard.writeText(gmPrompt);gmSet("Instruction copied. Now open Gemini and paste it.","ok")}
+ catch(e){gmSet("Copy was blocked. The instruction is in the box below: select all, copy it, then clear the box before pasting Gemini's answer.");$("gmText").value=gmPrompt}}
+$("gmBtn").onclick=()=>{state.form=readForm();save();
+ if(!state.form.topic){setStatus("Enter a lesson title or topic first.","err");$("topic").focus();return}
+ gmKind=state.tab;gmPrompt=PROMPTS[gmKind](state.form,"")+"\n\nPut the JSON inside one code block. Do not add any other text.";
+ $("gmTitle").textContent="Use my Gemini: "+NAMES[gmKind];$("gmText").value="";gmSet("");$("gmModal").hidden=false;gmCopyNow();};
+$("gmCopy").onclick=gmCopyNow;
+function gmApply(raw){const t=String(raw||"").trim();if(!t){gmSet("Nothing to use yet. Copy Gemini's answer first.","err");return}
+ if(t===gmPrompt.trim()){gmSet("That is the instruction, not Gemini's answer. Paste it into Gemini first, then copy Gemini's reply.","err");return}
+ let p;try{p=window.__parseJSON(t)}catch(e){gmSet("That doesn't look like Gemini's full answer. Copy the whole reply (use the copy icon under it) and try again. If Gemini stopped halfway, type \"continue\" in Gemini first.","err");return}
+ if(!VALID[gmKind](p)){gmSet("Gemini's answer is missing some parts. In Gemini, click Regenerate, then copy and paste again.","err");return}
+ if(gmKind==="slides")arr(p.slides).forEach(x=>{delete x.svg});
+ state[gmKind]=p;state.sample[gmKind]=false;state.tab=gmKind;save();render();
+ $("gmModal").hidden=true;setStatus(`Your ${NAMES[gmKind]} is ready from your Gemini. Review it, then download or copy.`+(gmKind==="slides"?" Tap Add picture on any slide to add a drawing.":""),"ok");}
+$("gmPaste").onclick=async()=>{try{const t=await navigator.clipboard.readText();$("gmText").value=t;gmApply(t)}catch(e){gmSet("Your browser blocked automatic paste. Long-press or right-click the box and choose Paste, then tap Use this answer.","err")}};
+$("gmUse").onclick=()=>gmApply($("gmText").value);
+$("gmClose").onclick=()=>{$("gmModal").hidden=true};
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("gmModal").hidden)$("gmModal").hidden=true});
 
 loadForm();render();
 </script>
