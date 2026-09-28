@@ -1,0 +1,909 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Free ILAW lesson plan, DLL, PowerPoint, activity and weekly quiz generator for DepEd teachers.">
+<title>ILAW Lesson Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  --bg:#EDF0F5; --paper:#FFFFFF; --ink:#14213D; --muted:#586379; --line:#D4DAE4; --field:#F7F8FB;
+  --accent:#C97D06; --accent-ink:#7A4800; --accent-soft:#FCEFD4; --blue:#1F4E8C; --blue-soft:#E4ECF7;
+  --danger:#B42318; --ok:#1E7A46;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --ui:"Public Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;--bg:#0E1522;--paper:#162033;--ink:#E7EBF3;--muted:#9BA6BA;--line:#2B3752;--field:#1B2740;
+  --accent:#F0B03A;--accent-ink:#F7D08A;--accent-soft:#3A2B0E;--blue:#8DB4EA;--blue-soft:#1C2C48;--danger:#F2877D;--ok:#6FD39B;}}
+:root[data-theme="dark"]{
+  color-scheme:dark;--bg:#0E1522;--paper:#162033;--ink:#E7EBF3;--muted:#9BA6BA;--line:#2B3752;--field:#1B2740;
+  --accent:#F0B03A;--accent-ink:#F7D08A;--accent-soft:#3A2B0E;--blue:#8DB4EA;--blue-soft:#1C2C48;--danger:#F2877D;--ok:#6FD39B;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--ui);padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:1240px;margin:0 auto}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;padding-block:28px 20px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand svg{flex:none}
+.brand h1{font:800 clamp(26px,4vw,34px)/1 var(--display);margin:0;letter-spacing:-.01em}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:13.5px}
+.ilaw{display:flex;gap:6px;flex-wrap:wrap}
+.ilaw span{display:flex;align-items:baseline;gap:6px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:var(--paper);font-size:12.5px;color:var(--muted)}
+.ilaw b{font:800 16px/1 var(--display);color:var(--accent)}
+.grid{display:grid;grid-template-columns:minmax(0,370px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px}
+.panel h2{font:600 17px/1.2 var(--display);margin:0 0 4px}
+.panel .hint{margin:0 0 14px;color:var(--muted);font-size:13px}
+form{display:grid;gap:12px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+label{display:grid;gap:4px;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+label small{font-weight:400}
+input,select,textarea{font:inherit;font-size:14px;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:6px;padding:8px 10px;width:100%;min-width:0}
+textarea{resize:vertical;min-height:64px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+fieldset{border:0;padding:0;margin:0;display:grid;gap:10px}
+legend{font:600 11px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:8px}
+.btn{font:600 14px/1 var(--ui);border-radius:6px;padding:11px 14px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#1A1200}
+.btn.primary:hover{filter:brightness(1.05)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.status{font-size:13px;color:var(--muted);min-height:1.2em}
+.status.err{color:var(--danger)}
+.status.ok{color:var(--ok)}
+.docbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}
+.pill{font:600 11px/1 var(--ui);letter-spacing:.08em;text-transform:uppercase;padding:6px 9px;border-radius:99px;background:var(--blue-soft);color:var(--blue)}
+.pill.sample{background:var(--accent-soft);color:var(--accent-ink)}
+.doc{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:clamp(18px,4vw,44px);font-family:var(--serif);font-size:15.5px;line-height:1.55;box-shadow:0 1px 2px rgba(20,33,61,.06),0 8px 24px rgba(20,33,61,.06)}
+.doc .dephead{text-align:center;font-family:var(--ui);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);line-height:1.6}
+.doc h3{font:800 clamp(20px,3vw,26px)/1.15 var(--display);text-align:center;margin:10px 0 18px;text-wrap:balance}
+.meta{width:100%;border-collapse:collapse;font-family:var(--ui);font-size:13px;margin-bottom:22px}
+.meta td{border:1px solid var(--line);padding:6px 8px;vertical-align:top}
+.meta td:nth-child(odd){color:var(--muted);width:17%;white-space:nowrap}
+.sec-h{margin-top:28px;display:flex;align-items:center;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:6px;margin-bottom:12px}
+.sec-h .L{font:800 30px/1 var(--display);color:var(--accent);width:28px}
+.sec-h h4{font:700 15px/1.2 var(--ui);letter-spacing:.06em;text-transform:uppercase;margin:0}
+.sec-h small{display:block;font:400 12.5px/1.3 var(--ui);letter-spacing:0;text-transform:none;color:var(--muted)}
+.kv{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:6px 16px;margin:0}
+@media (max-width:560px){.kv{grid-template-columns:minmax(0,1fr)}}
+.kv dt{font:600 12.5px/1.5 var(--ui);color:var(--muted)}
+.kv dd{margin:0 0 6px}
+.doc ul,.doc ol{margin:4px 0 8px;padding-left:22px}
+.doc li{margin:2px 0}
+.day{font:700 13px/1 var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin:16px 0 8px}
+.tablewrap{overflow-x:auto}
+.steps{width:100%;border-collapse:collapse;font-size:14.5px;min-width:520px}
+.steps th{font:600 11.5px/1.3 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--line);padding:6px 8px}
+.steps td{border-bottom:1px solid var(--line);padding:9px 8px;vertical-align:top}
+.steps td.ph{font:600 13px/1.35 var(--ui);width:24%}
+.steps td.min{font:500 13px/1.35 var(--ui);font-variant-numeric:tabular-nums;white-space:nowrap;width:9%;color:var(--muted)}
+.steps .who{font:600 11px/1 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);display:block;margin-top:6px}
+.note{margin-top:28px;font-family:var(--ui);font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px}
+.revise{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:12px}
+@media (max-width:560px){.revise{grid-template-columns:minmax(0,1fr)}}
+.thinking{display:flex;align-items:center;gap:10px}
+.lamp{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 var(--accent);animation:glow 1.6s ease-in-out infinite}
+@keyframes glow{0%,100%{opacity:.4;box-shadow:0 0 0 0 transparent}50%{opacity:1;box-shadow:0 0 12px 3px var(--accent)}}
+@media (prefers-reduced-motion:reduce){.lamp{animation:none;opacity:1}}
+footer{margin-top:28px;color:var(--muted);font-size:12.5px;max-width:760px}
+[hidden]{display:none!important}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:12px}
+.tab{font:600 14px/1 var(--ui);background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:12px 12px 10px;cursor:pointer;display:flex;align-items:center;gap:7px}
+.tab b{font:800 14px/1 var(--display);color:var(--accent)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab:hover{color:var(--ink)}
+.toolrow{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;justify-content:space-between;margin-bottom:10px}
+.toolrow .opts{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.toolrow .opts label{min-width:120px}
+.mainstatus{margin:-2px 0 10px}
+.dll{width:100%;border-collapse:collapse;font-size:13.5px;min-width:760px;line-height:1.45}
+.dll th,.dll td{border:1px solid var(--line);padding:8px;vertical-align:top;text-align:left}
+.dll thead th{font:700 12px/1.3 var(--ui);letter-spacing:.06em;text-transform:uppercase;background:var(--blue-soft);color:var(--blue)}
+.dll th.rowh{font:600 12.5px/1.35 var(--ui);width:15%;background:var(--field)}
+.dll th.rowh b{display:block;font:800 20px/1 var(--display);color:var(--accent);margin-bottom:4px}
+.dll td ul,.dll td ol{padding-left:18px;margin:0}
+.dll td.span{background:var(--field)}
+.slides{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:14px}
+.slide{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--paper);display:grid;grid-template-rows:auto auto}
+.slide .face{aspect-ratio:16/9;max-width:100%;padding:14px 16px;background:#FFFFFF;color:#14213D;font-family:var(--ui);display:flex;flex-direction:column;gap:6px;overflow:hidden;position:relative}
+.slide .face.cover{background:#14213D;color:#FFFFFF;justify-content:center}
+.slide .face .tag{font:700 9px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:#C97D06}
+.slide .face h5{font:800 15px/1.15 var(--display);margin:0;text-wrap:balance}
+.slide .face.cover h5{font-size:19px}
+.slide .face ul{margin:0;padding-left:15px;font-size:10.5px;line-height:1.35}
+.slide .face .num{position:absolute;right:10px;bottom:8px;font:600 9px/1 var(--ui);color:#8A93A6;font-variant-numeric:tabular-nums}
+.slide .face.withimg{display:grid;grid-template-columns:minmax(0,1fr) 44%;gap:10px;align-items:center}
+.slide .face .txt{display:flex;flex-direction:column;gap:6px;min-width:0}
+.slide .face img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px;border:1px solid #D4DAE4;background:#F3F6FB}
+.slide .face .ph{width:100%;aspect-ratio:4/3;border-radius:6px;border:1px dashed #C9D2E3;display:grid;place-items:center;font:600 9px/1.2 var(--ui);color:#8A93A6;text-align:center;padding:4px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:2px}
+.tiles div{display:flex;gap:5px;align-items:center;font-size:9.5px;line-height:1.2;border-radius:5px;padding:5px 6px;border:1px solid #D4DAE4}
+.tiles b{flex:none;width:16px;height:16px;border-radius:50%;display:grid;place-items:center;color:#FFFFFF;font-size:9px}
+.tiles div.right{outline:2px solid #1E7A46}
+.slide .notes{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;justify-content:space-between}
+.mini{font:600 11.5px/1 var(--ui);background:none;border:1px solid var(--line);color:var(--ink);border-radius:5px;padding:5px 8px;cursor:pointer}
+.mini:hover{border-color:var(--muted)}
+.mini:disabled{opacity:.5;cursor:not-allowed}
+.slide .notes{font-size:12px;color:var(--muted);padding:8px 12px;border-top:1px solid var(--line);font-family:var(--ui)}
+.slide .notes b{color:var(--ink);font-weight:600}
+.actbox{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--ui);font-size:13px;color:var(--muted);justify-content:center;margin:-8px 0 18px}
+.actbox b{color:var(--ink);font-weight:600}
+.item{margin:0 0 10px}
+.choices{list-style:none;padding-left:0!important;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:2px 16px;margin:4px 0 0!important}
+.blank{display:inline-block;min-width:90px;border-bottom:1px solid var(--ink);margin-left:6px}
+.rub{width:100%;border-collapse:collapse;font-size:14px;min-width:420px}
+.rub th,.rub td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+.rub th{font:600 12px/1.3 var(--ui);background:var(--field)}
+.rub td.pts{font-variant-numeric:tabular-nums;white-space:nowrap;width:10%}
+.qtypes{display:flex!important;flex-wrap:wrap;gap:4px 12px;align-items:center;max-width:430px}
+.qtypes>span{width:100%;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+.qtypes label{display:flex;flex-direction:row;align-items:center;gap:5px;font-size:13px;color:var(--ink);font-weight:500}
+.qtypes input{width:auto}
+.tos{width:100%;border-collapse:collapse;font-family:var(--ui);font-size:13px;min-width:560px}
+.tos th,.tos td{border:1px solid var(--line);padding:6px 8px;text-align:center;vertical-align:top;font-variant-numeric:tabular-nums}
+.tos th{font-weight:600;font-size:11.5px;background:var(--field);letter-spacing:.02em}
+.tos td:first-child,.tos th:first-child{text-align:left}
+.tos tfoot td{font-weight:700;background:var(--field)}
+.match{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:8px 24px}
+@media (max-width:560px){.match{grid-template-columns:minmax(0,1fr)}}
+.lvl{font:600 10px/1 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-left:6px}
+.key{margin-top:26px;border:1px dashed var(--accent);border-radius:6px;padding:12px 16px;background:var(--accent-soft)}
+.key h4{font:700 12px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 8px}
+.settings{background:var(--paper);border:1px solid var(--accent);border-radius:10px;padding:16px 18px;margin-bottom:18px;display:grid;gap:10px}
+.settings h2{font:600 17px/1.2 var(--display);margin:0}
+.settings p{margin:0;color:var(--muted);font-size:13px}
+.settings .row3{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1.6fr)}
+@media (max-width:700px){.settings .row3{grid-template-columns:minmax(0,1fr)}}
+.settings a{color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="8" fill="var(--ink)"/><path d="M20 8c-5 0-8.5 3.6-8.5 8.2 0 3.3 1.8 5.3 3.4 7 .9 1 1.6 2 1.6 3.3h7c0-1.3.7-2.3 1.6-3.3 1.6-1.7 3.4-3.7 3.4-7C28.5 11.6 25 8 20 8z" fill="var(--accent)"/><rect x="16.5" y="28.5" width="7" height="2.4" rx="1" fill="var(--paper)"/><rect x="17.5" y="32" width="5" height="2" rx="1" fill="var(--paper)"/></svg>
+      <div>
+        <h1>ILAW Lesson Planner</h1>
+        <p>Lesson plans, weekly DLLs, slides and activities in the DepEd ILAW format (DO No. 9, s. 2026).</p>
+      </div>
+    </div>
+    <div style="display:grid;gap:8px;justify-items:end">
+    <button class="btn" type="button" id="aiBtn">AI settings</button>
+    <div class="ilaw" aria-label="The four ILAW parts">
+      <span><b>I</b>Intentions</span><span><b>L</b>Learning Experiences</span><span><b>A</b>Assessment</span><span><b>W</b>Ways Forward</span>
+    </div></div>
+  </header>
+
+  <section class="settings" id="aiPanel" hidden aria-labelledby="aih">
+    <h2 id="aih">Connect your AI key</h2>
+    <p>This site uses your own AI key to write plans. The key is saved only in this browser and is sent only to the AI company you pick. Google Gemini has a free tier: get a key at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>.</p>
+    <div class="row3">
+      <label>Provider <select id="aiProv"><option value="gemini">Google Gemini (free tier)</option><option value="anthropic">Anthropic Claude API</option></select></label>
+      <label>Model <input id="aiModel" autocomplete="off"></label>
+      <label>API key <input id="aiKey" type="password" autocomplete="off" placeholder="Paste your key"></label>
+    </div>
+    <div class="actions"><button class="btn primary" type="button" id="aiSave">Save and test</button><button class="btn" type="button" id="aiClear">Remove key</button><span class="status" id="aiStatus"></span></div>
+  </section>
+
+  <div class="grid">
+    <section class="panel" aria-labelledby="formh">
+      <h2 id="formh">Lesson details</h2>
+      <p class="hint">Every tab uses these details. Blank standards are drafted for you and flagged to check against the curriculum guide.</p>
+      <form id="f" autocomplete="off">
+        <fieldset>
+          <legend>Class</legend>
+          <div class="row">
+            <label>Grade level <select id="grade" name="grade"></select></label>
+            <label>Term <select id="term" name="term"><option>Term 1</option><option selected>Term 2</option><option>Term 3</option></select></label>
+          </div>
+          <label>Learning area <select id="area" name="area"></select></label>
+          <div class="row3">
+            <label>Week <input id="week" name="week" inputmode="numeric" placeholder="1"></label>
+            <label>Sessions <input id="sessions" name="sessions" type="number" min="1" max="5" value="2"></label>
+            <label>Min / session <input id="minutes" name="minutes" type="number" min="20" max="240" step="5" value="60"></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Lesson</legend>
+          <label>Lesson title or topic <input id="topic" name="topic" required placeholder="e.g. Photosynthesis and cellular respiration"></label>
+          <label>Learning competency <small>(paste from the MATATAG CG, with code if any)</small>
+            <textarea id="competency" name="competency" rows="3"></textarea></label>
+          <label>Content standard <small>(optional)</small> <textarea id="cs" name="cs" rows="2"></textarea></label>
+          <label>Performance standard <small>(optional)</small> <textarea id="ps" name="ps" rows="2"></textarea></label>
+        </fieldset>
+        <fieldset>
+          <legend>Context</legend>
+          <label>Learners and resources <small>(class size, needs, what you have)</small>
+            <textarea id="context" name="context" rows="2" placeholder="e.g. 42 learners, mixed reading levels, one TV, no internet"></textarea></label>
+          <div class="row">
+            <label>Language <select id="lang" name="lang"><option>English</option><option>Filipino</option><option>English with Filipino terms</option></select></label>
+            <label>Detail <select id="detail" name="detail"><option>Concise</option><option selected>Standard</option><option>Detailed (for observation)</option></select></label>
+          </div>
+          <div class="row">
+            <label>Teacher <input id="teacher" name="teacher"></label>
+            <label>School <input id="school" name="school"></label>
+          </div>
+        </fieldset>
+      </form>
+    </section>
+
+    <section aria-label="Outputs">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" id="t-plan" data-k="plan" aria-selected="true"><b>I·L·A·W</b>Lesson plan</button>
+        <button class="tab" role="tab" id="t-dll" data-k="dll" aria-selected="false">Weekly DLL</button>
+        <button class="tab" role="tab" id="t-slides" data-k="slides" aria-selected="false">PowerPoint</button>
+        <button class="tab" role="tab" id="t-act" data-k="act" aria-selected="false">Activity maker</button>
+        <button class="tab" role="tab" id="t-quiz" data-k="quiz" aria-selected="false">Weekly quiz</button>
+      </div>
+
+      <div class="toolrow">
+        <div class="opts">
+          <button class="btn primary" type="button" id="gen">Generate lesson plan</button>
+          <button class="btn" type="button" id="stop" hidden>Stop</button>
+          <label id="o-dll" hidden>Days in the week <select id="dlldays"><option>3</option><option selected>4</option><option>5</option></select></label>
+          <label id="o-slides" hidden>Slides <select id="slidecount"><option>8</option><option selected>12</option><option>16</option></select></label>
+          <label id="o-pics" hidden style="display:flex;flex-direction:row;align-items:center;gap:6px;padding-bottom:10px"><input type="checkbox" id="pics" checked style="width:auto"> Add pictures</label>
+          <span id="o-act" hidden style="display:contents">
+            <label>Activity type <select id="acttype">
+              <option>Worksheet</option><option>Group activity</option><option>Classroom game</option><option>Quiz (multiple choice)</option><option>Performance task with rubric</option><option>Graphic organizer</option><option>Exit ticket</option></select></label>
+            <label>Items <select id="actitems"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></label>
+          </span>
+          <span id="o-quiz" hidden style="display:contents">
+            <label>Items <select id="quizitems"><option>10</option><option>15</option><option selected>20</option><option>25</option><option>30</option><option>40</option><option>50</option></select></label>
+            <fieldset class="qtypes" aria-label="Question types"><span>Question types</span>
+              <label><input type="checkbox" value="Multiple choice" checked> Multiple choice</label>
+              <label><input type="checkbox" value="True or false" checked> True or false</label>
+              <label><input type="checkbox" value="Identification" checked> Identification</label>
+              <label><input type="checkbox" value="Matching type" checked> Matching</label>
+              <label><input type="checkbox" value="Short answer / essay"> Essay</label>
+            </fieldset>
+          </span>
+        </div>
+        <div class="actions">
+          <span class="pill sample" id="badge">Sample</span>
+          <button class="btn" type="button" id="copy">Copy text</button>
+          <button class="btn" type="button" id="dl">Download .docx</button>
+        </div>
+      </div>
+      <div class="status mainstatus" id="status" role="status" aria-live="polite"></div>
+      <div id="view"></div>
+      <form class="revise" id="rv" hidden>
+        <input id="rvtext" placeholder="Ask for a change, e.g. make it work without printing" aria-label="Revision request">
+        <button class="btn" type="submit" id="rvbtn">Revise</button>
+      </form>
+      <footer>Drafts are a starting point. Under the DepEd order, you decide the objectives and check the content before you teach. Compare the standards and competency with your MATATAG curriculum guide, and adjust activities for your learners.</footer>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<script>
+/* ---------- Standalone AI + download bridge (replaces Claude runtime) ---------- */
+(function(){
+ const DEF={gemini:"gemini-3.5-flash",anthropic:"claude-sonnet-5"};
+ const ls={get:k=>{try{return localStorage.getItem(k)||""}catch(e){return ""}},set:(k,v)=>{try{v?localStorage.setItem(k,v):localStorage.removeItem(k)}catch(e){}}};
+ const cfg=()=>{const prov=ls.get("ai-prov")||"gemini";return {prov,model:ls.get("ai-model-"+prov)||DEF[prov],key:ls.get("ai-key-"+prov)}};
+ function toText(input){return typeof input==="string"?input:input.map(t=>(t.role==="assistant"?"Assistant: ":"")+t.content).join("\n\n")}
+ async function call(input,opts={}){
+  const c=cfg();if(!c.key)throw {code:"no_key",message:"No API key"};
+  const text=toText(input);let res;
+  try{
+   if(c.prov==="gemini"){
+    res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(c.model)}:generateContent`,{method:"POST",signal:opts.signal,
+     headers:{"Content-Type":"application/json","x-goog-api-key":c.key},
+     body:JSON.stringify({contents:[{role:"user",parts:[{text}]}],generationConfig:{maxOutputTokens:32768,...(opts.json?{responseMimeType:"application/json"}:{})}})});
+   }else{
+    res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",signal:opts.signal,
+     headers:{"Content-Type":"application/json","x-api-key":c.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+     body:JSON.stringify({model:c.model,max_tokens:16000,messages:[{role:"user",content:text}]})});
+   }
+  }catch(e){if(e&&e.name==="AbortError")throw {code:"cancelled"};throw {code:"network",message:String(e)}}
+  let body={};try{body=await res.json()}catch(e){}
+  if(!res.ok){const m=(body.error&&(body.error.message||body.error.type))||res.statusText;
+   if(res.status===401||res.status===403||/api key|API_KEY/i.test(m))throw {code:"bad_key",message:m};
+   if(res.status===404)throw {code:"model_not_found",message:m};
+   if(res.status===429)throw {code:"rate_limited",message:m};
+   throw {code:"upstream_error",message:m};}
+  let out="",truncated=false;
+  if(c.prov==="gemini"){const cand=(body.candidates||[])[0]||{};out=((cand.content||{}).parts||[]).filter(p=>!p.thought).map(p=>p.text||"").join("");truncated=cand.finishReason==="MAX_TOKENS";if(!out&&body.promptFeedback&&body.promptFeedback.blockReason)throw {code:"refused"};}
+  else{out=(body.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");truncated=body.stop_reason==="max_tokens";}
+  if(!out.trim())throw {code:"empty_completion"};
+  if(opts.onText)try{opts.onText({text:out,delta:out})}catch(e){}
+  return {text:out,truncated,modelTierApplied:"default"};
+ }
+ function parseJSON(t){t=String(t).trim();try{return JSON.parse(t)}catch(e){}
+  const f=t.match(/```(?:json)?\s*([\s\S]*?)```/);if(f){try{return JSON.parse(f[1])}catch(e){}}
+  const a=Math.min(...["{","["].map(ch=>{const i=t.indexOf(ch);return i<0?1e9:i})),b=Math.max(t.lastIndexOf("}"),t.lastIndexOf("]"));
+  if(a<b){try{return JSON.parse(t.slice(a,b+1))}catch(e){}}throw {code:"invalid_json",text:t}}
+ const sample=(input,opts)=>call(input,opts||{});
+ sample.json=async(input,opts)=>{const r=await call(input,{...(opts||{}),json:true});if(r.truncated)throw {code:"invalid_json",text:r.text};return parseJSON(r.text)};
+ sample.limits=async()=>({maxPromptBytes:200000});
+ const downloads={save:async({filename,data})=>{const blob=data instanceof Blob?data:new Blob([data]);const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);return {status:"saved"}}};
+ window.claude={use:async n=>n==="sample"?sample:n==="downloads"?downloads:null};
+ window.__aiCfg=cfg;window.__aiCall=call;
+ // settings panel
+ const $=id=>document.getElementById(id);
+ function fillPanel(){const c=cfg();$("aiProv").value=c.prov;$("aiModel").value=c.model;$("aiKey").value=c.key}
+ window.openAI=msg=>{fillPanel();$("aiPanel").hidden=false;if(msg){$("aiStatus").className="status err";$("aiStatus").textContent=msg}$("aiKey").focus();$("aiPanel").scrollIntoView({behavior:"smooth",block:"start"})};
+ document.addEventListener("DOMContentLoaded",()=>{
+  fillPanel();if(!cfg().key)$("aiPanel").hidden=false;
+  $("aiBtn").onclick=()=>{$("aiPanel").hidden=!$("aiPanel").hidden;fillPanel()};
+  $("aiProv").onchange=()=>{const p=$("aiProv").value;$("aiModel").value=ls.get("ai-model-"+p)||DEF[p];$("aiKey").value=ls.get("ai-key-"+p)};
+  $("aiClear").onclick=()=>{const p=$("aiProv").value;ls.set("ai-key-"+p,"");$("aiKey").value="";$("aiStatus").className="status";$("aiStatus").textContent="Key removed from this browser."};
+  $("aiSave").onclick=async()=>{const p=$("aiProv").value;ls.set("ai-prov",p);ls.set("ai-model-"+p,$("aiModel").value.trim()||DEF[p]);ls.set("ai-key-"+p,$("aiKey").value.trim());
+   $("aiStatus").className="status";$("aiStatus").textContent="Testing…";
+   try{await call('Reply with the single word OK.');$("aiStatus").className="status ok";$("aiStatus").textContent="Connected. You can generate now.";setTimeout(()=>{$("aiPanel").hidden=true},1500)}
+   catch(e){$("aiStatus").className="status err";$("aiStatus").textContent=e.code==="no_key"?"Paste a key first.":e.code==="bad_key"?"The key was rejected. Check that you copied it fully.":e.code==="model_not_found"?"That model name was not found. Check the provider's model list and type a current one.":e.code==="rate_limited"?"Key works but you hit the rate limit. Wait a minute.":"Could not connect: "+(e.message||e.code)}};
+ });
+})();
+</script>
+<script>
+const GRADES=["Kindergarten","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6","Grade 7","Grade 8","Grade 9","Grade 10"];
+const AREAS=["English","Filipino","Mathematics","Science","Araling Panlipunan","Values Education (GMRC/VE)","Makabansa","Language","Reading and Literacy","Music and Arts","Physical Education and Health","Technology and Livelihood Education (TLE)","EPP","Other"];
+const $=id=>document.getElementById(id);
+const fill=(sel,a,v)=>{sel.innerHTML=a.map(x=>`<option${x===v?" selected":""}>${x}</option>`).join("")};
+fill($("grade"),GRADES,"Grade 10");fill($("area"),AREAS,"Music and Arts");
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const arr=v=>Array.isArray(v)?v.filter(x=>x!=null&&x!==""):(v?[v]:[]);
+const li=a=>arr(a).map(x=>`<li>${esc(x)}</li>`).join("");
+
+/* ---------- samples (Grade 10 Music and Arts, Term 2 exemplar) ---------- */
+const SAMPLE_FORM={grade:"Grade 10",term:"Term 2",area:"Music and Arts",week:"1",sessions:"2",minutes:"60",
+ topic:"Challenges and Issues of Selected Creative Industries",
+ competency:"Examine the challenges faced by select local Filipino artists in the creative industries.",
+ cs:"The learners demonstrate understanding of possible strategies and solutions to artists' challenges and issues in the creative industries in relation to their intended career.",
+ ps:"The learners critique the challenges and issues in the practice of creative industries in relation to their intended career.",
+ context:"40 learners, mixed interests (music, dance, digital art), one TV, limited internet",lang:"English",detail:"Standard",teacher:"",school:""};
+
+const SAMPLE_PLAN={title:"Challenges and Issues of Selected Creative Industries",
+ intentions:{content_standard:SAMPLE_FORM.cs,performance_standard:SAMPLE_FORM.ps,competency:SAMPLE_FORM.competency,
+  objectives:["Identify challenges and issues confronting local Filipino artists","Classify barriers as economic, institutional, social or cultural","Analyze how one challenge affects a Filipino artist's creative practice using a case study"],
+  big_idea:"Filipino artists face real barriers such as competition, copyright, censorship and funding, and knowing these helps learners plan a sustainable creative career.",
+  key_terms:["creative works","copyright","copyleft","cultural appropriation","heritage","glocal"],
+  materials:["Station cards for the 9 creative industry domains","Printed news headlines or phone photos of them","Manila paper and markers","TV for case-study slides"],flags:[]},
+ experiences:[
+  {day:1,steps:[
+   {phase:"Activating prior knowledge",minutes:10,teacher:"Shows photos of a local band, a fashion designer and an animator. Asks what each one needs to earn a living from their art.",learners:"Share quick answers; list needs on the board (money, audience, tools, protection)."},
+   {phase:"Establishing lesson purpose",minutes:15,teacher:"Runs a Domain Carousel: nine stations, one per creative industry domain. Groups rotate every 90 seconds.",learners:"At each station, write one activity and one challenge they think artists in that domain face."},
+   {phase:"Developing understanding",minutes:25,teacher:"Introduces key terms through context clues. Gives sentences using each term and lets pairs infer the meaning before clarifying.",learners:"In pairs, infer and write definitions, then compare with the class definitions."},
+   {phase:"Making generalizations",minutes:10,teacher:"Asks: Which challenge from the carousel surprised you most, and why?",learners:"Write a two-sentence exit reflection."}]},
+  {day:2,steps:[
+   {phase:"Deepening understanding",minutes:30,teacher:"Assigns each group one barrier (funding, market access, legal, social, cultural) and a short case of a Filipino artist.",learners:"Analyze the case: what is the problem, who is affected, how it changes the artist's work, and one possible solution."},
+   {phase:"Deepening understanding",minutes:20,teacher:"Facilitates group reports in a news-anchor style and adds follow-up questions.",learners:"Present findings in 3 minutes per group; peers note one solution they agree with."},
+   {phase:"Making generalizations",minutes:10,teacher:"Connects the issues to learners' intended careers.",learners:"Complete: 'If I become a ___, the challenge I must prepare for is ___ because ___.'"}]}],
+ assessment:{formative:["Carousel sheets checked for accurate domain examples","Pair definitions checked during context-clue activity","Teacher observation checklist during group analysis"],
+  summative:"Group case-study critique scored with a rubric: identifies the challenge (5), explains its effect on the artist (5), proposes a realistic solution (5), presentation clarity (5).",
+  items:["Which issue involves using indigenous weaving patterns on mass-produced shirts without credit? (cultural appropriation)","A musician earns less from streaming than from album sales. Which challenge is this? (global economic competition)","What kind of license lets others reuse and modify a work as long as new works stay open? (copyleft)"]},
+ ways_forward:{remediation:"For learners who could not classify barriers, give a sorting activity with ten short scenarios and a word bank, done with a peer buddy.",
+  enrichment:"Advanced learners interview a local artist (in person or by message) about one real challenge and share a one-page summary.",
+  reflection:["How many learners met the objectives, based on the exit reflection?","Which domain stations produced weak examples and need reteaching?","What will I change in Week 2 based on today?"]}};
+
+const SAMPLE_DLL={title:SAMPLE_PLAN.title,content_standard:SAMPLE_FORM.cs,performance_standard:SAMPLE_FORM.ps,
+ competencies:["Examine the challenges faced by select local Filipino artists in the creative industries"],
+ days:[
+  {label:"Day 1",topic:"Creative industry domains and their challenges",objectives:["Name the 9 creative industry domains","State one challenge in each domain"],resources:["Domain station cards","Manila paper, markers"],experiences:["Photo prompt: what artists need to earn a living","Domain Carousel in groups","Class sharing of challenges found"],assessment:"Carousel sheets checked for accurate examples",ways_forward:"Learners with incomplete sheets finish two stations with a partner"},
+  {label:"Day 2",topic:"Key terms: copyright, copyleft, appropriation, heritage",objectives:["Define key terms using context clues","Give a Filipino example of each term"],resources:["Context-clue sentence strips","TV for examples"],experiences:["Pairs infer meanings from sentences","Class builds a word wall with examples","News headline scavenger hunt"],assessment:"5-item matching quiz on key terms",ways_forward:"Reteach terms missed by most learners using picture cues"},
+  {label:"Day 3",topic:"Case studies of Filipino artists",objectives:["Classify an artist's barrier as economic, institutional, social or cultural","Explain how it affects the artist's work"],resources:["Printed case studies (5)","Analysis guide sheet"],experiences:["Groups analyze one case each","Guide questions: problem, who is affected, effect, solution","Draft a 3-minute report"],assessment:"Observation checklist during group work",ways_forward:"Groups that need help get a worked example first"},
+  {label:"Day 4",topic:"Critique and career connection",objectives:["Present a critique of an artist's challenge","Connect the issue to an intended career"],resources:["Rubric","Timer"],experiences:["News-anchor style group reports","Peer feedback: one solution we agree with","Personal career reflection"],assessment:"Group critique scored with a 20-point rubric",ways_forward:"Enrichment: interview a local artist about a real challenge"}],
+ reflection:["No. of learners who earned 80% in the evaluation","No. of learners who require additional activities for remediation","Which strategies worked well? Why?","What difficulties did I encounter?"]};
+
+const SAMPLE_SLIDES={slides:[
+ {kind:"title",part:"",title:"Challenges and Issues of Selected Creative Industries",bullets:["Music and Arts 10 · Term 2 · Week 1"],notes:"Welcome the class and show today's topic."},
+ {kind:"content",part:"I",title:"Today's goals",bullets:["Identify challenges facing Filipino artists","Classify barriers: economic, institutional, social, cultural","Analyze a real case study"],notes:"Read the objectives aloud and ask which one sounds hardest."},
+ {kind:"content",part:"L",title:"What does an artist need to earn a living?",bullets:["A local band","A fashion designer","An animator"],notes:"Show photos. Write learner answers on the board."},
+ {kind:"activity",part:"L",title:"Domain Carousel",bullets:["9 stations, 1 creative domain each","90 seconds per station","Write 1 activity and 1 challenge"],notes:"Assign groups and start the timer."},
+ {kind:"content",part:"L",title:"Key terms",bullets:["Copyright and copyleft","Cultural appropriation","Heritage","Glocal"],notes:"Pairs infer each meaning from a sentence before you explain."},
+ {kind:"check",part:"A",title:"Check your understanding",bullets:["Weaving patterns copied on shirts without credit is:","A. Copyleft","B. Cultural appropriation","C. Heritage"],answer:"B",notes:"Answer: B. Ask a learner to explain why."},
+ {kind:"content",part:"L",title:"Case study groups",bullets:["What is the problem?","Who is affected?","How does it change the artist's work?","What is one solution?"],notes:"Give each group one barrier and one case."},
+ {kind:"summary",part:"W",title:"Connect it to your career",bullets:["If I become a ___,","the challenge I must prepare for is ___","because ___."],notes:"Collect as exit tickets."}]};
+
+const SAMPLE_SVG=[
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#E4ECF7"/><circle cx="310" cy="70" r="38" fill="#F0B03A"/><path d="M60 230c0-60 50-110 120-110s120 40 120 90c0 30-30 36-50 30-22-6-34 10-28 30 4 16-10 26-40 26H90c-18 0-30-30-30-66z" fill="#FFFFFF" stroke="#14213D" stroke-width="4"/><circle cx="120" cy="190" r="14" fill="#E76F51"/><circle cx="160" cy="155" r="14" fill="#F0B03A"/><circle cx="212" cy="150" r="14" fill="#2A9D8F"/><circle cx="252" cy="178" r="14" fill="#1F4E8C"/><rect x="250" y="40" width="10" height="130" rx="4" fill="#C97D06" transform="rotate(35 255 105)"/><path d="M300 190l40-10v60" fill="none" stroke="#14213D" stroke-width="6"/><ellipse cx="292" cy="242" rx="14" ry="10" fill="#14213D"/><ellipse cx="332" cy="232" rx="14" ry="10" fill="#14213D"/><path d="M300 190v52M340 180v52" stroke="#14213D" stroke-width="6"/></svg>`,
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#FCEFD4"/><circle cx="190" cy="160" r="110" fill="#FFFFFF" stroke="#14213D" stroke-width="4"/><circle cx="190" cy="160" r="80" fill="#E76F51"/><circle cx="190" cy="160" r="52" fill="#FFFFFF"/><circle cx="190" cy="160" r="24" fill="#1F4E8C"/><path d="M190 160L340 60" stroke="#14213D" stroke-width="7" stroke-linecap="round"/><path d="M325 45l35 5-10 32z" fill="#F0B03A" stroke="#14213D" stroke-width="3"/><path d="M60 270h260" stroke="#C97D06" stroke-width="6" stroke-linecap="round"/></svg>`,
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#DDF1EE"/><ellipse cx="130" cy="200" rx="55" ry="60" fill="#C97D06" stroke="#14213D" stroke-width="4"/><ellipse cx="130" cy="140" rx="38" ry="40" fill="#C97D06" stroke="#14213D" stroke-width="4"/><circle cx="130" cy="185" r="16" fill="#14213D"/><rect x="122" y="20" width="16" height="110" fill="#14213D"/><rect x="114" y="10" width="32" height="24" rx="4" fill="#14213D"/><rect x="250" y="70" width="36" height="70" rx="18" fill="#1F4E8C" stroke="#14213D" stroke-width="4"/><path d="M240 120c0 30 56 30 56 0M268 150v60M245 210h46" fill="none" stroke="#14213D" stroke-width="5"/><circle cx="330" cy="235" r="20" fill="#F0B03A" stroke="#14213D" stroke-width="3"/><circle cx="300" cy="250" r="20" fill="#F0B03A" stroke="#14213D" stroke-width="3"/><circle cx="345" cy="265" r="20" fill="#F0B03A" stroke="#14213D" stroke-width="3"/></svg>`,
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#E4ECF7"/><circle cx="200" cy="150" r="105" fill="none" stroke="#14213D" stroke-width="3" stroke-dasharray="10 10"/><g stroke="#14213D" stroke-width="3"><circle cx="200" cy="45" r="20" fill="#E76F51"/><circle cx="267" cy="70" r="20" fill="#F0B03A"/><circle cx="303" cy="132" r="20" fill="#2A9D8F"/><circle cx="291" cy="203" r="20" fill="#1F4E8C"/><circle cx="237" cy="249" r="20" fill="#E76F51"/><circle cx="163" cy="249" r="20" fill="#F0B03A"/><circle cx="109" cy="203" r="20" fill="#2A9D8F"/><circle cx="97" cy="132" r="20" fill="#1F4E8C"/><circle cx="133" cy="70" r="20" fill="#C97D06"/></g><circle cx="200" cy="150" r="42" fill="#FFFFFF" stroke="#14213D" stroke-width="4"/><path d="M200 150v-26M200 150l18 10" stroke="#14213D" stroke-width="5" stroke-linecap="round"/></svg>`,
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#FCEFD4"/><path d="M60 80c50-20 100-20 140 5v170c-40-25-90-25-140-5z" fill="#FFFFFF" stroke="#14213D" stroke-width="4"/><path d="M340 80c-50-20-100-20-140 5v170c40-25 90-25 140-5z" fill="#FFFFFF" stroke="#14213D" stroke-width="4"/><path d="M85 115h90M85 140h90M85 165h70M225 115h90M225 140h90M225 165h70" stroke="#8A93A6" stroke-width="5" stroke-linecap="round"/><circle cx="300" cy="70" r="40" fill="#1F4E8C" stroke="#14213D" stroke-width="4"/><path d="M316 56a20 20 0 1 0 0 28" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/><path d="M95 210l20 20 30-40" fill="none" stroke="#2A9D8F" stroke-width="7" stroke-linecap="round"/></svg>`,
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#E4ECF7"/><path d="M70 50h260a30 30 0 0 1 30 30v110a30 30 0 0 1-30 30H170l-50 45v-45H70a30 30 0 0 1-30-30V80a30 30 0 0 1 30-30z" fill="#FFFFFF" stroke="#14213D" stroke-width="4"/><path d="M168 110a32 32 0 1 1 48 28c-10 6-16 12-16 26" fill="none" stroke="#C97D06" stroke-width="14" stroke-linecap="round"/><circle cx="200" cy="195" r="9" fill="#C97D06"/></svg>`,
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#DDF1EE"/><rect x="70" y="40" width="190" height="230" rx="10" fill="#FFFFFF" stroke="#14213D" stroke-width="4"/><path d="M100 85h130M100 115h130M100 145h100M100 175h120M100 205h80" stroke="#8A93A6" stroke-width="7" stroke-linecap="round"/><circle cx="255" cy="155" r="62" fill="#FFFFFF" fill-opacity=".6" stroke="#14213D" stroke-width="10"/><path d="M300 200l55 55" stroke="#14213D" stroke-width="18" stroke-linecap="round"/><circle cx="255" cy="155" r="14" fill="#E76F51"/></svg>`,
+`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#FCEFD4"/><path d="M40 260h80v-50h80v-50h80v-50h80" fill="none" stroke="#14213D" stroke-width="6" stroke-linejoin="round"/><path d="M40 260h80v-50h80v-50h80v-50h80v150H40z" fill="#F0B03A" fill-opacity=".45"/><path d="M340 110V40" stroke="#14213D" stroke-width="5"/><path d="M340 40l40 14-40 14z" fill="#E76F51" stroke="#14213D" stroke-width="3"/><circle cx="160" cy="175" r="14" fill="#1F4E8C"/><path d="M160 189v30M160 200l-14 12M160 200l16-6M160 219l-10 22M160 219l12 22" stroke="#1F4E8C" stroke-width="6" stroke-linecap="round"/></svg>`];
+SAMPLE_SLIDES.slides.forEach((x,i)=>{x.svg=SAMPLE_SVG[i]});
+
+const SAMPLE_ACT={title:"Name That Challenge",type:"Worksheet",objective:"Classify challenges faced by Filipino artists into the correct issue.",duration:"20 minutes",grouping:"Individual",
+ materials:["Activity sheet","Pen"],instructions:["Read each situation about a Filipino artist.","Write the issue it shows on the blank.","Choose from the word box."],
+ parts:[{heading:"Part I. Identification",word_bank:["global competition","copyright","censorship","cultural appropriation","heritage loss"],items:[
+  {q:"A local film loses cinema screens to a foreign blockbuster.",answer:"global competition"},
+  {q:"A digital artist finds her drawing sold on shirts without permission.",answer:"copyright"},
+  {q:"A song critical of officials is pulled from the radio.",answer:"censorship"},
+  {q:"A brand copies a T'boli design without credit or payment.",answer:"cultural appropriation"},
+  {q:"Only two elders in a town still play the kulintang.",answer:"heritage loss"}]},
+  {heading:"Part II. Multiple choice",items:[
+  {q:"Which law protects creative works in the Philippines?",choices:["RA 8293","RA 9710","RA 10066","RA 7610"],answer:"RA 8293"},
+  {q:"Adapting a global idea to fit local culture is called:",choices:["heritage","glocal","copyleft","censorship"],answer:"glocal"}]}],
+ rubric:[]};
+
+const SAMPLE_QUIZ={title:"Weekly Quiz: Challenges and Issues of Selected Creative Industries",time:"30 minutes",
+ instructions:"Read each item carefully. Write your answers on a separate answer sheet. Avoid erasures.",
+ tos:[{topic:"Creative industry domains and their challenges",days:1,items:4,item_numbers:"1-2, 7, 11",easy:3,average:1,difficult:0},
+  {topic:"Key terms: copyright, copyleft, appropriation, heritage",days:1,items:5,item_numbers:"3-4, 8, 12-13",easy:3,average:1,difficult:1},
+  {topic:"Case studies of Filipino artists",days:1,items:3,item_numbers:"5, 9, 14",easy:1,average:1,difficult:1},
+  {topic:"Critique and career connection",days:1,items:3,item_numbers:"6, 10, 15",easy:2,average:1,difficult:0}],
+ parts:[
+  {heading:"Part I. Multiple choice",type:"mc",directions:"Choose the letter of the best answer.",items:[
+   {q:"Which of these is one of the 9 creative industry domains under RA 11904?",choices:["Agriculture","Performing arts","Mining","Banking"],answer:"Performing arts",level:"easy"},
+   {q:"A local film loses cinema screens to a foreign blockbuster. This shows:",choices:["heritage loss","censorship","global economic competition","copyleft"],answer:"global economic competition",level:"easy"},
+   {q:"Which law protects creative works in the Philippines?",choices:["RA 8293","RA 9710","RA 10066","RA 7610"],answer:"RA 8293",level:"easy"},
+   {q:"A license that lets others reuse and modify a work as long as new works stay open is:",choices:["copyright","copyleft","trademark","patent"],answer:"copyleft",level:"average"},
+   {q:"A T'boli pattern is printed on shirts sold abroad with no credit or payment to the community. The best solution is to:",choices:["ban all indigenous designs","collaborate with and credit the culture-bearers","lower the shirt price","sell the shirts only online"],answer:"collaborate with and credit the culture-bearers",level:"difficult"},
+   {q:"A learner who wants to be an animator should prepare most for which issue?",choices:["digital copyright and piracy","heritage loss of kulintang","child labor on farms","censorship of radio"],answer:"digital copyright and piracy",level:"average"}]},
+  {heading:"Part II. True or false",type:"tf",directions:"Write TRUE if the statement is correct and FALSE if it is not.",items:[
+   {q:"Streaming usually pays artists more per play than album sales.",answer:"False",level:"easy"},
+   {q:"Heritage refers to traditions and artifacts passed down through generations.",answer:"True",level:"easy"},
+   {q:"Only big companies face market-access barriers in the creative industries.",answer:"False",level:"average"},
+   {q:"Freedom of expression is protected by the 1987 Philippine Constitution.",answer:"True",level:"easy"}]},
+  {heading:"Part III. Matching type",type:"matching",directions:"Match the situation in Column A with the issue in Column B.",options:["censorship","cultural appropriation","gender and development","child protection","heritage preservation"],items:[
+   {q:"A song critical of officials is pulled from the radio.",answer:"censorship",level:"easy"},
+   {q:"A female director gets less funding than her male peers.",answer:"gender and development",level:"average"},
+   {q:"A town records its elders playing traditional music.",answer:"heritage preservation",level:"difficult"},
+   {q:"A 12-year-old actor's filming hours are limited by law.",answer:"child protection",level:"easy"},
+   {q:"A brand copies an Ifugao weave without permission.",answer:"cultural appropriation",level:"easy"}]}]};
+
+/* ---------- state ---------- */
+const KINDS=["plan","dll","slides","act","quiz"];
+let state={form:{...SAMPLE_FORM},plan:SAMPLE_PLAN,dll:SAMPLE_DLL,slides:SAMPLE_SLIDES,act:SAMPLE_ACT,quiz:SAMPLE_QUIZ,sample:{plan:true,dll:true,slides:true,act:true,quiz:true},tab:"plan"};
+try{const s=JSON.parse(localStorage.getItem("ilaw-state2")||"null");if(s&&s.form){state={...state,...s,sample:{...state.sample,...(s.sample||{})}}}
+ else{const o=JSON.parse(localStorage.getItem("ilaw-state")||"null");if(o&&o.plan&&o.form){state.form=o.form;state.plan=o.plan;state.sample.plan=!!o.sample}}}catch(e){}
+if(state.sample.slides)state.slides=SAMPLE_SLIDES;
+if(state.sample.quiz||!state.quiz)state.quiz=SAMPLE_QUIZ;
+const h0=(location.hash||"").slice(1);if(KINDS.includes(h0))state.tab=h0;
+const save=()=>{try{localStorage.setItem("ilaw-state2",JSON.stringify(state))}catch(e){}};
+
+const FIELDS=["grade","term","area","week","sessions","minutes","topic","competency","cs","ps","context","lang","detail","teacher","school"];
+function loadForm(){FIELDS.forEach(k=>{if(state.form[k]!=null)$(k).value=state.form[k]})}
+function readForm(){const o={};FIELDS.forEach(k=>o[k]=$(k).value.trim());return o}
+$("f").addEventListener("input",()=>{state.form=readForm();save()});
+$("f").addEventListener("submit",e=>e.preventDefault());
+
+/* ---------- renderers ---------- */
+function header(f,label,title){
+ const m=[["School",f.school],["Grade level",f.grade],["Teacher",f.teacher],["Learning area",f.area],["Term / Week",(f.term||"")+(f.week?" · Week "+f.week:"")],["Sessions",`${f.sessions} × ${f.minutes} min`]];
+ return `<div class="dephead">Republic of the Philippines · Department of Education<br>${label}</div><h3>${esc(title)}</h3>
+ <div class="tablewrap"><table class="meta"><tbody>${[0,2,4].map(i=>`<tr><td>${m[i][0]}</td><td>${esc(m[i][1])||"&nbsp;"}</td><td>${m[i+1][0]}</td><td>${esc(m[i+1][1])||"&nbsp;"}</td></tr>`).join("")}</tbody></table></div>`;
+}
+const sec=(L,t,s)=>`<div class="sec-h"><span class="L">${L}</span><h4>${t}<small>${s}</small></h4></div>`;
+const noteLine=(k,flags)=>`<p class="note">${state.sample[k]?"Sample based on DepEd's Grade 10 Music and Arts Term 2 exemplar. Enter your own lesson and press Generate.":"Drafted with AI. "+(arr(flags).length?"Check before use: "+arr(flags).map(esc).join(" · "):"Check content against your MATATAG curriculum guide before use.")}</p>`;
+
+function renderPlan(){
+ const p=state.plan,f=state.form,I=p.intentions||{},A=p.assessment||{},W=p.ways_forward||{};
+ let h=header(f,"ILAW Lesson Plan",p.title||f.topic);
+ h+=sec("I","Intentions","What learners should know and be able to do")+`<dl class="kv">
+  <dt>Content standard</dt><dd>${esc(I.content_standard)}</dd><dt>Performance standard</dt><dd>${esc(I.performance_standard)}</dd>
+  <dt>Learning competency</dt><dd>${esc(I.competency)}</dd><dt>Objectives</dt><dd><ol>${li(I.objectives)}</ol></dd>
+  ${I.big_idea?`<dt>Big idea</dt><dd>${esc(I.big_idea)}</dd>`:""}
+  ${arr(I.key_terms).length?`<dt>Key terms</dt><dd>${arr(I.key_terms).map(esc).join(", ")}</dd>`:""}
+  ${arr(I.materials).length?`<dt>Materials</dt><dd><ul>${li(I.materials)}</ul></dd>`:""}</dl>`;
+ h+=sec("L","Learning Experiences","How learners will learn");
+ arr(p.experiences).forEach(d=>{h+=`<div class="day">Session ${esc(d.day)}</div><div class="tablewrap"><table class="steps"><thead><tr><th>Part</th><th>Time</th><th>Activity</th></tr></thead><tbody>`+
+  arr(d.steps).map(s=>`<tr><td class="ph">${esc(s.phase)}</td><td class="min">${esc(s.minutes)} min</td><td><span class="who" style="margin-top:0">Teacher</span>${esc(s.teacher)}<span class="who">Learners</span>${esc(s.learners)}</td></tr>`).join("")+`</tbody></table></div>`});
+ h+=sec("A","Assessment","How learning will be checked")+`<dl class="kv"><dt>Formative</dt><dd><ul>${li(A.formative)}</ul></dd><dt>Summative</dt><dd>${esc(A.summative)}</dd>
+  ${arr(A.items).length?`<dt>Sample items</dt><dd><ol>${li(A.items)}</ol></dd>`:""}</dl>`;
+ h+=sec("W","Ways Forward","Remediation, enrichment and reflection")+`<dl class="kv"><dt>Remediation</dt><dd>${esc(W.remediation)}</dd><dt>Enrichment</dt><dd>${esc(W.enrichment)}</dd><dt>Teacher reflection</dt><dd><ul>${li(W.reflection)}</ul></dd></dl>`;
+ return `<article class="doc">${h+noteLine("plan",I.flags)}</article>`;
+}
+
+function renderDLL(){
+ const d=state.dll,f=state.form,days=arr(d.days),n=days.length;
+ const row=(L,name,fn)=>`<tr><th class="rowh" scope="row">${L?`<b>${L}</b>`:""}${name}</th>${days.map(x=>`<td>${fn(x)}</td>`).join("")}</tr>`;
+ const span=(L,name,html)=>`<tr><th class="rowh" scope="row">${L?`<b>${L}</b>`:""}${name}</th><td class="span" colspan="${n}">${html}</td></tr>`;
+ let h=header(f,"Daily Lesson Log · ILAW Format",d.title||f.topic);
+ h+=`<div class="tablewrap"><table class="dll"><thead><tr><th></th>${days.map(x=>`<th>${esc(x.label)}</th>`).join("")}</tr></thead><tbody>
+ ${span("I","Content standard",esc(d.content_standard))}
+ ${span("","Performance standard",esc(d.performance_standard))}
+ ${span("","Learning competencies",`<ul>${li(d.competencies)}</ul>`)}
+ ${row("","Objectives",x=>`<ol>${li(x.objectives)}</ol>`)}
+ ${row("L","Topic / content",x=>esc(x.topic))}
+ ${row("","Resources",x=>`<ul>${li(x.resources)}</ul>`)}
+ ${row("","Learning experiences",x=>`<ol>${li(x.experiences)}</ol>`)}
+ ${row("A","Assessment",x=>esc(x.assessment))}
+ ${row("W","Ways forward",x=>esc(x.ways_forward))}
+ ${span("","Reflection",`<ul>${arr(d.reflection).map(r=>`<li>${esc(r)} <span class="blank"></span></li>`).join("")}</ul>`)}
+ </tbody></table></div>`;
+ return `<article class="doc" style="font-family:var(--ui)">${h+noteLine("dll",d.flags)}</article>`;
+}
+
+const PARTNAME={I:"Intentions",L:"Learning Experiences",A:"Assessment",W:"Ways Forward"};
+const TILE=[["FCEFD4","C97D06"],["E4ECF7","1F4E8C"],["DDF1EE","2A9D8F"],["FBE3DC","E76F51"]];
+function splitCheck(x){const q=[],ch=[];arr(x.bullets).forEach(b=>{const m=String(b).match(/^\s*([A-Da-d])[.)]\s*(.*)$/);if(m)ch.push({l:m[1].toUpperCase(),t:m[2]});else q.push(b)});
+ const ans=(String(x.answer||"").trim().match(/^[A-Da-d]/)||String(x.notes||"").match(/answer\s*(?:is)?\s*:?\s*([A-D])\b/i)||[])[0];
+ return {q:q.join(" "),ch,ans:ans?ans.slice(-1).toUpperCase():""}}
+let drawing=new Set();
+function renderSlides(){
+ const s=arr(state.slides.slides);
+ return `<div class="slides">${s.map((x,i)=>{
+  let inner;
+  if(x.kind==="check"){const c=splitCheck(x);
+   inner=`<div class="face"><span class="tag">A · Check your understanding</span><h5>${esc(c.q||x.title)}</h5><div class="tiles">${c.ch.map((o,j)=>`<div class="${o.l===c.ans?"right":""}" style="background:#${TILE[j%4][0]}"><b style="background:#${TILE[j%4][1]}">${o.l}</b>${esc(o.t)}</div>`).join("")}</div><span class="num">${i+1}</span></div>`;
+  }else{
+   const pic=x.svg?`<img alt="" src="${svgURL(x.svg)}">`:(drawing.has(i)?`<div class="ph">Drawing…</div>`:"");
+   inner=`<div class="face${x.kind==="title"?" cover":""}${pic?" withimg":""}"><div class="txt">
+    ${x.kind!=="title"&&x.part?`<span class="tag">${x.kind==="activity"?"Activity":esc(x.part)+" · "+esc(PARTNAME[x.part]||"")}</span>`:""}
+    <h5>${esc(x.title)}</h5><ul${x.kind==="title"?' style="list-style:none;padding:0;color:#F0B03A"':""}>${li(x.bullets)}</ul></div>${pic}<span class="num">${i+1}</span></div>`;
+  }
+  const btn=x.kind==="check"?`<span style="font-size:11.5px">+ answer reveal slide</span>`:`<button class="mini" type="button" data-redraw="${i}"${drawing.size||busyNow?" disabled":""}>${x.svg?"New picture":"Add picture"}</button>`;
+  return `<div class="slide">${inner}<div class="notes"><span>${x.notes?`<b>Notes:</b> ${esc(x.notes)}`:""}</span>${btn}</div></div>`}).join("")}</div>${noteLine("slides",state.slides.flags).replace('class="note"','class="note" style="font-family:var(--ui)"')}`;
+}
+function svgURL(svg){return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg)}
+function cleanSVG(v){let s=String(v||"").trim();const a=s.indexOf("<svg"),b=s.lastIndexOf("</svg>");if(a<0||b<0)return "";s=s.slice(a,b+6);
+ s=s.replace(/<script[\s\S]*?<\/script>/gi,"").replace(/<foreignObject[\s\S]*?<\/foreignObject>/gi,"").replace(/<image\b[^>]*>/gi,"").replace(/\son\w+\s*=\s*("[^"]*"|'[^']*')/gi,"").replace(/<text[\s\S]*?<\/text>/gi,"");
+ if(!/xmlns=/.test(s))s=s.replace("<svg",'<svg xmlns="http://www.w3.org/2000/svg"');
+ if(!/viewBox=/.test(s))s=s.replace("<svg",'<svg viewBox="0 0 400 300"');
+ return s.length>20000?"":s}
+const PIC_STYLE=`Style for every picture (keep it identical across the deck): flat vector classroom illustration, bold rounded shapes with 4px navy (#14213D) outlines, a full-canvas background rect in ONE soft color (#E4ECF7, #FCEFD4, #DDF1EE or #FBE3DC), accents only from #F0B03A #C97D06 #E76F51 #2A9D8F #1F4E8C #FFFFFF #8A93A6. Friendly and clear, readable when projected. Philippine context where natural (e.g. kulintang, jeepney, sari-sari store, nipa hut, Filipino learners as simple figures).`;
+function picPrompt(items){const f=state.form;return `Draw one simple illustration per classroom slide for a ${f.grade} ${f.area} lesson on "${f.topic}".
+${PIC_STYLE}
+SVG RULES: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">, 4:3. No <text>, no letters, numbers or words anywhere. No <image>, <script>, <style>, filters, gradients or external links. At most 35 shapes, under 3000 characters each. Show the slide's idea concretely with objects or simple people, not abstract decoration.
+SLIDES:
+${items.map(({i,x})=>`${i+1}. ${x.title} — ${arr(x.bullets).join("; ")}`).join("\n")}
+Reply with ONLY JSON: {"images":[{"n":<slide number>,"svg":"<svg ...>...</svg>"}]}`}
+let busyNow=false;
+async function illustrate(sample,idx){
+ if(!sample)sample=await window.claude?.use?.("sample");if(!sample)return;
+ const slides=state.slides.slides,batches=[];for(let j=0;j<idx.length;j+=4)batches.push(idx.slice(j,j+4));
+ idx.forEach(i=>drawing.add(i));busyNow=true;render();
+ let done=0,failed=0;const total=idx.length;const t0=Date.now();
+ const upd=()=>{$("status").className="status mainstatus";$("status").innerHTML=`<span class="thinking"><span class="lamp"></span>Drawing pictures · ${done} of ${total} done · ${Math.round((Date.now()-t0)/1000)}s</span>`};
+ clearInterval(timer);upd();timer=setInterval(upd,1000);
+ ctl=new AbortController();$("stop").hidden=false;$("gen").disabled=true;const sig=ctl.signal;
+ const work=async b=>{try{const r=await sample.json(picPrompt(b.map(i=>({i,x:slides[i]}))),{signal:sig,cache:false});
+   const got=new Set();arr(r&&r.images).forEach(im=>{const i=Number(im.n)-1;const svg=cleanSVG(im.svg);if(b.includes(i)&&svg&&slides[i]){slides[i].svg=svg;got.add(i)}});
+   failed+=b.length-got.size;}catch(e){failed+=b.length;if(e&&e.code==="cancelled")throw e}
+  finally{b.forEach(i=>drawing.delete(i));done+=b.length;save();if(state.tab==="slides")render();}};
+ try{let q=batches.slice();const lanes=[0,1].map(async()=>{while(q.length){const b=q.shift();await work(b)}});await Promise.all(lanes);
+  clearInterval(timer);setStatus(failed?`Pictures added. ${failed} could not be drawn; press Add picture on those slides to try again.`:"Pictures added. Download the .pptx to use them.",failed?"":"ok");}
+ catch(e){clearInterval(timer);setStatus("Stopped drawing pictures.")}
+ finally{drawing.clear();busyNow=false;$("stop").hidden=true;$("gen").disabled=false;if(state.tab==="slides")render();}
+}
+$("view").addEventListener("click",async e=>{const b=e.target.closest("[data-redraw]");if(!b||busyNow)return;const i=Number(b.dataset.redraw);
+ const sample=await window.claude?.use?.("sample");if(!sample){setStatus("Drawing pictures needs this page open in Claude.","err");return}
+ if(state.sample.slides){state.slides=JSON.parse(JSON.stringify(SAMPLE_SLIDES));state.sample.slides=false}
+ illustrate(sample,[i]);});
+function svgToPng(svg,w,h){return new Promise((res,rej)=>{const img=new Image();const url=URL.createObjectURL(new Blob([svg],{type:"image/svg+xml"}));
+ img.onload=()=>{try{const c=document.createElement("canvas");c.width=w;c.height=h;const g=c.getContext("2d");g.fillStyle="#FFFFFF";g.fillRect(0,0,w,h);g.drawImage(img,0,0,w,h);URL.revokeObjectURL(url);res(c.toDataURL("image/png"))}catch(err){rej(err)}};
+ img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("svg"))};img.src=url})}
+
+function renderAct(){
+ const a=state.act,f=state.form;let n=0;
+ let h=`<div class="dephead">${esc(f.grade)} · ${esc(f.area)} · ${esc(f.term)}${f.week?" · Week "+esc(f.week):""}<br>${esc(a.type||"Activity")}</div><h3>${esc(a.title)}</h3>
+ <div class="actbox"><span><b>Objective:</b> ${esc(a.objective)}</span><span><b>Time:</b> ${esc(a.duration)}</span><span><b>Grouping:</b> ${esc(a.grouping)}</span></div>
+ <p style="font-family:var(--ui);font-size:13.5px">Name: <span class="blank" style="min-width:200px"></span> &nbsp; Section: <span class="blank"></span> &nbsp; Score: <span class="blank" style="min-width:60px"></span></p>`;
+ if(arr(a.materials).length)h+=`<p><b>Materials:</b> ${arr(a.materials).map(esc).join(", ")}</p>`;
+ h+=`<p style="margin-bottom:4px"><b>Directions</b></p><ol>${li(a.instructions)}</ol>`;
+ arr(a.parts).forEach(p=>{h+=`<div class="day">${esc(p.heading)}</div>`;
+  if(arr(p.word_bank).length)h+=`<p style="border:1px solid var(--line);padding:8px 12px;border-radius:4px;font-family:var(--ui);font-size:13.5px"><b>Word box:</b> ${arr(p.word_bank).map(esc).join(" · ")}</p>`;
+  h+=arr(p.items).map(it=>{n++;return `<div class="item">${n}. ${esc(it.q)}${arr(it.choices).length?"":` <span class="blank"></span>`}${arr(it.choices).length?`<ul class="choices">${arr(it.choices).map((c,j)=>`<li>${"abcdefgh"[j]}. ${esc(c)}</li>`).join("")}</ul>`:""}</div>`}).join("")});
+ if(arr(a.rubric).length)h+=`<div class="day">Rubric</div><div class="tablewrap"><table class="rub"><thead><tr><th>Criterion</th><th>Description</th><th>Points</th></tr></thead><tbody>${arr(a.rubric).map(r=>`<tr><td><b>${esc(r.criterion)}</b></td><td>${esc(r.description)}</td><td class="pts">${esc(r.points)}</td></tr>`).join("")}</tbody></table></div>`;
+ const keys=[];arr(a.parts).forEach(p=>arr(p.items).forEach(it=>keys.push(it.answer)));
+ if(keys.some(Boolean))h+=`<div class="key"><h4>Answer key (teacher copy)</h4><ol>${keys.map(k=>`<li>${esc(k)}</li>`).join("")}</ol></div>`;
+ return `<article class="doc">${h+noteLine("act",a.flags)}</article>`;
+}
+
+const LETTERS="abcdefghijklmnop";
+function quizNumbers(q){let n=0;return arr(q.parts).map(p=>arr(p.items).map(()=>++n))}
+function keyText(p,it){if(p.type==="matching"){const i=arr(p.options).indexOf(it.answer);return (i>=0?LETTERS[i].toUpperCase()+". ":"")+(it.answer||"")}
+ if(arr(it.choices).length){const i=arr(it.choices).indexOf(it.answer);return (i>=0?LETTERS[i]+". ":"")+(it.answer||"")}return it.answer||""}
+function renderQuiz(){
+ const q=state.quiz,f=state.form,nums=quizNumbers(q),total=nums.flat().length;
+ let h=`<div class="dephead">${esc(f.grade)} · ${esc(f.area)} · ${esc(f.term)}${f.week?" · Week "+esc(f.week):""}<br>Weekly Quiz</div><h3>${esc(q.title||("Weekly Quiz: "+f.topic))}</h3>
+ <div class="actbox"><span><b>Items:</b> ${total}</span>${q.time?`<span><b>Time:</b> ${esc(q.time)}</span>`:""}</div>
+ <p style="font-family:var(--ui);font-size:13.5px">Name: <span class="blank" style="min-width:200px"></span> &nbsp; Section: <span class="blank"></span> &nbsp; Score: <span class="blank" style="min-width:40px"></span> / ${total}</p>
+ ${q.instructions?`<p><b>General directions:</b> ${esc(q.instructions)}</p>`:""}`;
+ arr(q.parts).forEach((p,pi)=>{h+=`<div class="day">${esc(p.heading)}</div>${p.directions?`<p style="margin-top:0"><i>${esc(p.directions)}</i></p>`:""}`;
+  if(arr(p.word_bank).length)h+=`<p style="border:1px solid var(--line);padding:8px 12px;border-radius:4px;font-family:var(--ui);font-size:13.5px"><b>Word box:</b> ${arr(p.word_bank).map(esc).join(" · ")}</p>`;
+  if(p.type==="matching"){h+=`<div class="match"><div><b style="font-family:var(--ui);font-size:12px">COLUMN A</b>${arr(p.items).map((it,j)=>`<div class="item"><span class="blank" style="min-width:36px;margin:0 6px 0 0"></span>${nums[pi][j]}. ${esc(it.q)}</div>`).join("")}</div><div><b style="font-family:var(--ui);font-size:12px">COLUMN B</b>${arr(p.options).map((o,j)=>`<div class="item">${LETTERS[j].toUpperCase()}. ${esc(o)}</div>`).join("")}</div></div>`;return}
+  h+=arr(p.items).map((it,j)=>`<div class="item">${nums[pi][j]}. ${esc(it.q)}${arr(it.choices).length||p.type==="short"?"":` <span class="blank"></span>`}${p.type==="short"?`<div style="border-bottom:1px solid var(--line);height:52px"></div>`:""}${arr(it.choices).length?`<ul class="choices">${arr(it.choices).map((c,k)=>`<li>${LETTERS[k]}. ${esc(c)}</li>`).join("")}</ul>`:""}</div>`).join("")});
+ h+=`<div class="key"><h4>Answer key (teacher copy)</h4><ol>${arr(q.parts).flatMap(p=>arr(p.items).map(it=>`<li>${esc(keyText(p,it))}<span class="lvl">${esc(it.level||"")}</span></li>`)).join("")}</ol></div>`;
+ const t=arr(q.tos);if(t.length){const sum=k=>t.reduce((a,r)=>a+(Number(r[k])||0),0),ti=sum("items")||1;
+  h+=`<div class="day" style="margin-top:26px">Table of specifications</div><div class="tablewrap"><table class="tos"><thead><tr><th>Topic / competency</th><th>Days</th><th>%</th><th>Items</th><th>Easy</th><th>Average</th><th>Difficult</th><th>Item no.</th></tr></thead><tbody>${t.map(r=>`<tr><td>${esc(r.topic)}</td><td>${esc(r.days)}</td><td>${Math.round((Number(r.items)||0)/ti*100)}%</td><td>${esc(r.items)}</td><td>${esc(r.easy)}</td><td>${esc(r.average)}</td><td>${esc(r.difficult)}</td><td>${esc(r.item_numbers)}</td></tr>`).join("")}</tbody><tfoot><tr><td>Total</td><td>${sum("days")}</td><td>100%</td><td>${sum("items")}</td><td>${sum("easy")}</td><td>${sum("average")}</td><td>${sum("difficult")}</td><td></td></tr></tfoot></table></div>`}
+ return `<article class="doc">${h+noteLine("quiz",q.flags)}</article>`;
+}
+const GENLABEL={plan:"Generate lesson plan",dll:"Generate weekly DLL",slides:"Generate slides",act:"Generate activity",quiz:"Generate weekly quiz"};
+const DLLABEL={plan:"Download .docx",dll:"Download .docx",slides:"Download .pptx",act:"Download .docx",quiz:"Download .docx"};
+function render(){
+ const k=state.tab;
+ document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",String(t.dataset.k===k)));
+ $("gen").textContent=GENLABEL[k];$("dl").textContent=DLLABEL[k];
+ $("o-dll").hidden=k!=="dll";$("o-slides").hidden=k!=="slides";$("o-pics").hidden=k!=="slides";$("o-act").hidden=k!=="act";$("o-quiz").hidden=k!=="quiz";
+ $("badge").hidden=!state.sample[k];$("rv").hidden=state.sample[k];
+ $("view").innerHTML=({plan:renderPlan,dll:renderDLL,slides:renderSlides,act:renderAct,quiz:renderQuiz})[k]();
+}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{state.tab=t.dataset.k;save();$("status").textContent="";render();try{history.replaceState(null,"","#"+t.dataset.k)}catch(e){}});
+
+/* ---------- prompts ---------- */
+function ctx(f){return `LESSON DETAILS
+Grade level: ${f.grade}
+Learning area: ${f.area}
+${f.term}${f.week?", Week "+f.week:""}
+Lesson title/topic: ${f.topic}
+Learning competency: ${f.competency||"(not given: draft one and add a flag)"}
+Content standard: ${f.cs||"(not given: draft one and add a flag)"}
+Performance standard: ${f.ps||"(not given: draft one and add a flag)"}
+Learners and resources: ${f.context||"(typical Philippine public school class)"}
+Language to write in: ${f.lang}
+Level of detail: ${f.detail}`}
+const ROLE="You are an experienced Philippine DepEd master teacher. Everything aligns with the MATATAG curriculum, the 3-term school year, and the ILAW framework of DepEd Order No. 9, s. 2026 (I = Intentions, L = Learning Experiences, A = Assessment, W = Ways Forward). Use Filipino context and examples realistic for a public school with the resources given.";
+function planCtx(){return state.sample.plan?"":`\nThe teacher's approved lesson plan (stay consistent with it):\n${JSON.stringify(state.plan).slice(0,14000)}\n`}
+
+const PROMPTS={
+ plan:(f,extra)=>`${ROLE}
+Write one ILAW lesson plan.
+${ctx(f)}
+Sessions: ${f.sessions||1}, each ${f.minutes||60} minutes
+RULES
+- Objectives: 2-4, measurable, with action verbs, serving the competency.
+- Learner-centered, active learning experiences. Phases such as "Activating prior knowledge", "Establishing lesson purpose", "Developing understanding", "Deepening understanding", "Making generalizations". For each session the step minutes MUST add up exactly to ${f.minutes||60}. Provide exactly ${f.sessions||1} session(s).
+- Each step says what the teacher does and what learners do, in 1-3 concrete sentences.
+- Assessment: formative checks, one summative task with scoring, 3-5 sample items with answers in parentheses.
+- Ways forward: specific remediation and enrichment, and 3 teacher reflection questions.
+- "flags": short notes on anything the teacher must verify. Empty array if none.
+${extra||""}
+Reply with ONLY one JSON object in this shape:
+{"title":"","intentions":{"content_standard":"","performance_standard":"","competency":"","objectives":[""],"big_idea":"","key_terms":[""],"materials":[""],"flags":[""]},"experiences":[{"day":1,"steps":[{"phase":"","minutes":10,"teacher":"","learners":""}]}],"assessment":{"formative":[""],"summative":"","items":[""]},"ways_forward":{"remediation":"","enrichment":"","reflection":[""]}}`,
+ dll:(f,extra)=>`${ROLE}
+Write a weekly Daily Lesson Log (DLL) in the ILAW format for ${$("dlldays").value} days, one column per day, each day about ${f.minutes||60} minutes.
+${ctx(f)}
+${planCtx()}
+RULES
+- Days build on each other from introduction to application to assessment.
+- Per day: a topic, 1-3 measurable objectives, 2-4 resources, 3-5 short learning-experience steps (active, learner-centered), one assessment, and one ways-forward note (remediation or enrichment).
+- Keep each entry short enough to fit a table cell (under 20 words per bullet).
+- "reflection": 4-5 DLL reflection prompts (e.g. no. of learners who earned 80%, no. needing remediation, strategies that worked, difficulties met).
+- "flags": things the teacher must verify. Empty array if none.
+${extra||""}
+Reply with ONLY one JSON object in this shape:
+{"title":"","content_standard":"","performance_standard":"","competencies":[""],"days":[{"label":"Day 1","topic":"","objectives":[""],"resources":[""],"experiences":[""],"assessment":"","ways_forward":""}],"reflection":[""],"flags":[""]}`,
+ slides:(f,extra)=>`${ROLE}
+Create a classroom PowerPoint deck of about ${$("slidecount").value} slides that a teacher projects while teaching this lesson.
+${ctx(f)}
+${planCtx()}
+RULES
+- First slide kind "title" (bullets: one subtitle line like "${f.area} · ${f.term}${f.week?" · Week "+f.week:""}"). Then objectives, a motivation/hook, the content broken into clear teaching slides, at least one "activity" slide with instructions, 1-2 "check" slides (first bullet is the question, then 3-4 choices as bullets starting "A. ", "B. " etc.; put the correct letter in "answer" and a one-line explanation in notes), and a closing "summary" slide.
+- "part" marks the ILAW part the slide serves: "I", "L", "A" or "W" ("" for the title slide).
+- Max 5 bullets per slide, each under 14 words, written for learners to read. Accurate content.
+- "notes": 1-3 sentences telling the teacher what to say or do.
+- "flags": facts the teacher should double-check. Empty array if none.
+${extra||""}
+Reply with ONLY one JSON object in this shape:
+{"slides":[{"kind":"title|content|activity|check|summary","part":"","title":"","bullets":[""],"answer":"","notes":""}],"flags":[""]}`,
+ act:(f,extra)=>`${ROLE}
+Create one ready-to-use learner activity of this type: ${$("acttype").value}. About ${$("actitems").value} items or steps.
+${ctx(f)}
+${planCtx()}
+RULES
+- Directly practices the competency and topic. Clear directions learners can follow on their own.
+- Split into 1-3 parts with headings. Each item has "q" and "answer". Multiple-choice items add 3-4 "choices" (answer must equal one choice). Identification parts may include a "word_bank".
+- For a group activity, game or performance task: put the steps as items (answer can be "" or what the teacher looks for) and include a rubric with 3-5 criteria whose points add up to a round total.
+- For a graphic organizer: items are the boxes/prompts learners fill in, with expected answers.
+- "flags": facts the teacher should double-check. Empty array if none.
+${extra||""}
+Reply with ONLY one JSON object in this shape:
+{"title":"","type":"","objective":"","duration":"","grouping":"","materials":[""],"instructions":[""],"parts":[{"heading":"","word_bank":[],"items":[{"q":"","choices":[],"answer":""}]}],"rubric":[{"criterion":"","description":"","points":5}],"flags":[""]}`,
+ quiz:(f,extra)=>{const n=Number($("quizitems").value)||20,types=[...document.querySelectorAll(".qtypes input:checked")].map(x=>x.value);
+  const week=!state.sample.dll?`\nThe teacher's weekly DLL (the quiz covers these days):\n${JSON.stringify(state.dll).slice(0,12000)}\n`:planCtx();
+  return `${ROLE}
+Write a weekly summative quiz for ${f.term}${f.week?", Week "+f.week:""} with EXACTLY ${n} items in total, plus a Table of Specifications (TOS).
+${ctx(f)}
+${week}
+RULES
+- Cover every topic of the week in proportion to the days spent on it.
+- Use these question types, one part each, in this order: ${(types.length?types:["Multiple choice","True or false","Identification"]).join(", ")}. Headings like "Part I. Multiple choice".
+- Difficulty spread about 60% easy, 30% average, 10% difficult; tag every item "level".
+- "type" per part: "mc" (4 "choices", answer equals one choice exactly), "tf" (answer "True" or "False"), "identification" (optional "word_bank"), "matching" ("options" = Column B list with one extra distractor; each item's answer equals one option exactly), "short" (essay/short answer; answer = what a good answer includes; "points" per item).
+- Accurate content, Filipino context, age-appropriate wording, no trick questions, no "all of the above".
+- TOS rows per topic: days, items, item_numbers (e.g. "1-3, 12"), and easy/average/difficult counts. Items across rows must total ${n} and match the quiz numbering.
+- "time": a suggested time. "flags": facts the teacher should double-check. Empty array if none.
+${extra||""}
+Reply with ONLY one JSON object in this shape:
+{"title":"","time":"","instructions":"","tos":[{"topic":"","days":1,"items":0,"item_numbers":"","easy":0,"average":0,"difficult":0}],"parts":[{"heading":"","type":"mc","directions":"","options":[],"word_bank":[],"items":[{"q":"","choices":[],"answer":"","level":"easy","points":1}]}],"flags":[""]}`}
+};
+const VALID={plan:p=>p&&p.intentions&&Array.isArray(p.experiences),dll:p=>p&&Array.isArray(p.days)&&p.days.length,slides:p=>p&&Array.isArray(p.slides)&&p.slides.length,act:p=>p&&Array.isArray(p.parts),quiz:p=>p&&Array.isArray(p.parts)&&p.parts.length};
+
+/* ---------- generate ---------- */
+let ctl=null,timer=null;
+const setStatus=(t,cls)=>{clearInterval(timer);$("status").className="status mainstatus"+(cls?" "+cls:"");$("status").textContent=t};
+function busy(on,label){
+ $("gen").disabled=on;$("rvbtn").disabled=on;$("stop").hidden=!on;document.querySelectorAll(".tab").forEach(t=>t.disabled=on);
+ clearInterval(timer);
+ if(on){const t0=Date.now();const tick=()=>{$("status").className="status mainstatus";$("status").innerHTML=`<span class="thinking"><span class="lamp"></span>${label} · ${Math.round((Date.now()-t0)/1000)}s (usually under a minute)</span>`};tick();timer=setInterval(tick,1000)}
+}
+const ERR={no_key:"Add your AI key first (AI settings, top right).",bad_key:"Your AI key was rejected. Open AI settings and check it.",model_not_found:"The AI model name was not found. Open AI settings and change it.",network:"Could not reach the AI service. Check your internet connection.",not_granted:"Claude access was not allowed for this page, so nothing can be generated here.",sampling_disabled:"Claude is not available for this account.",rate_limited:"Too many requests right now. Wait a minute and try again.",session_expired:"Your session expired. Sign in again, then retry.",refused:"The AI declined this request. Try rewording the topic.",invalid_json:"The draft came back in the wrong shape. Press Generate again.",prompt_too_large:"The input is too long. Shorten the competency or context."};
+const NAMES={plan:"lesson plan",dll:"weekly DLL",slides:"slides",act:"activity",quiz:"weekly quiz"};
+async function run(k,extra,label){
+ state.form=readForm();save();
+ if(!state.form.topic){setStatus("Enter a lesson title or topic first.","err");$("topic").focus();return}
+ const sample=await window.claude?.use?.("sample");
+ if(!sample){setStatus("Generating needs this page open in Claude. The samples still show each format.","err");return}
+ ctl=new AbortController();busy(true,label);
+ try{
+  const p=await sample.json(PROMPTS[k](state.form,extra),{signal:ctl.signal,cache:false});
+  if(!VALID[k](p))throw{code:"invalid_json"};
+  if(k==="slides"){const old={};arr(state.slides.slides).forEach(x=>{if(x.svg&&!state.sample.slides)old[x.title]=x.svg});arr(p.slides).forEach(x=>{if(old[x.title])x.svg=old[x.title]})}
+  state[k]=p;state.sample[k]=false;save();busy(false);render();
+  setStatus(`Your ${NAMES[k]} is ready. Review it, then download or copy.`,"ok");
+  if(k==="slides"&&$("pics").checked){const need=[];p.slides.forEach((x,i)=>{if(!x.svg&&x.kind!=="check")need.push(i)});if(need.length)await illustrate(sample,need)}
+ }catch(e){busy(false);
+  if(e&&e.code==="cancelled"){setStatus("Stopped.");return}
+  if(e&&["no_key","bad_key","model_not_found"].includes(e.code))window.openAI&&window.openAI(ERR[e.code]);
+  setStatus(ERR[e&&e.code]||"Something went wrong while drafting. Press Generate to try again.","err")}
+}
+$("stop").onclick=()=>ctl?.abort();
+$("gen").onclick=()=>run(state.tab,"",({plan:"Drafting your lesson plan",dll:"Drafting your weekly DLL",slides:"Writing your slides",act:"Making your activity",quiz:"Writing your weekly quiz"})[state.tab]);
+$("rv").addEventListener("submit",e=>{e.preventDefault();const r=$("rvtext").value.trim();if(!r)return;const k=state.tab;
+ run(k,`\nREVISION: Here is the current version as JSON:\n${JSON.stringify(state[k],(key,v)=>key==="svg"?undefined:v).slice(0,20000)}\nApply this change from the teacher and keep everything else the same unless the change requires it: "${r}"`,"Revising");});
+
+/* ---------- plain text ---------- */
+function toText(){
+ const k=state.tab,f=state.form,L=[],head=`${f.grade} · ${f.area} · ${f.term}${f.week?" Week "+f.week:""}`;
+ if(k==="plan"){const p=state.plan,I=p.intentions||{},A=p.assessment||{},W=p.ways_forward||{};
+  L.push("ILAW LESSON PLAN",p.title||f.topic,head,`School: ${f.school}   Teacher: ${f.teacher}`,"","I. INTENTIONS","Content standard: "+(I.content_standard||""),"Performance standard: "+(I.performance_standard||""),"Learning competency: "+(I.competency||""),"Objectives:",...arr(I.objectives).map((o,i)=>`  ${i+1}. ${o}`));
+  if(arr(I.materials).length)L.push("Materials: "+arr(I.materials).join("; "));
+  L.push("","L. LEARNING EXPERIENCES");arr(p.experiences).forEach(d=>{L.push(`Session ${d.day}`);arr(d.steps).forEach(s=>L.push(`  ${s.phase} (${s.minutes} min)`,`    Teacher: ${s.teacher}`,`    Learners: ${s.learners}`))});
+  L.push("","A. ASSESSMENT","Formative: "+arr(A.formative).join("; "),"Summative: "+(A.summative||""),...arr(A.items).map((x,i)=>`  ${i+1}. ${x}`),"","W. WAYS FORWARD","Remediation: "+(W.remediation||""),"Enrichment: "+(W.enrichment||""),"Reflection:",...arr(W.reflection).map(x=>"  - "+x));}
+ if(k==="dll"){const d=state.dll;L.push("DAILY LESSON LOG (ILAW FORMAT)",d.title||f.topic,head,"","I. Content standard: "+(d.content_standard||""),"Performance standard: "+(d.performance_standard||""),"Learning competencies: "+arr(d.competencies).join("; "));
+  arr(d.days).forEach(x=>L.push("",x.label.toUpperCase(),"Topic: "+x.topic,"Objectives: "+arr(x.objectives).join("; "),"Resources: "+arr(x.resources).join("; "),"L. Learning experiences:",...arr(x.experiences).map((s,i)=>`  ${i+1}. ${s}`),"A. Assessment: "+x.assessment,"W. Ways forward: "+x.ways_forward));
+  L.push("","REFLECTION",...arr(d.reflection).map(r=>"  - "+r+": ____"));}
+ if(k==="slides")arr(state.slides.slides).forEach((s,i)=>L.push(`Slide ${i+1}: ${s.title}`,...arr(s.bullets).map(b=>"  • "+b),s.notes?"  Notes: "+s.notes:"",""));
+ if(k==="act"){const a=state.act;let n=0;const keys=[];L.push(a.title,`${a.type} · ${a.duration} · ${a.grouping}`,"Objective: "+a.objective,"","Directions:",...arr(a.instructions).map((x,i)=>`  ${i+1}. ${x}`));
+  arr(a.parts).forEach(p=>{L.push("",p.heading);if(arr(p.word_bank).length)L.push("Word box: "+arr(p.word_bank).join(" · "));arr(p.items).forEach(it=>{n++;keys.push(`${n}. ${it.answer||""}`);L.push(`${n}. ${it.q}${arr(it.choices).length?"":" ________"}`,...arr(it.choices).map((c,j)=>`   ${"abcdefgh"[j]}. ${c}`))})});
+  if(arr(a.rubric).length)L.push("","Rubric:",...arr(a.rubric).map(r=>`  ${r.criterion} (${r.points} pts): ${r.description}`));L.push("","ANSWER KEY",...keys);}
+ if(k==="quiz"){const q=state.quiz;let n=0;const keys=[];L.push(q.title,head,q.time?"Time: "+q.time:"",q.instructions||"");
+  arr(q.parts).forEach(p=>{L.push("",p.heading,p.directions||"");if(arr(p.word_bank).length)L.push("Word box: "+arr(p.word_bank).join(" · "));
+   arr(p.items).forEach(it=>{n++;keys.push(`${n}. ${keyText(p,it)}`);L.push(`${p.type==="matching"?"____ ":""}${n}. ${it.q}${arr(it.choices).length||p.type==="matching"?"":" ________"}`,...arr(it.choices).map((c,j)=>`   ${LETTERS[j]}. ${c}`))});
+   if(p.type==="matching")L.push("Column B:",...arr(p.options).map((o,j)=>`   ${LETTERS[j].toUpperCase()}. ${o}`))});
+  L.push("","ANSWER KEY",...keys);if(arr(q.tos).length)L.push("","TABLE OF SPECIFICATIONS",...arr(q.tos).map(r=>`${r.topic} | ${r.days} day(s) | ${r.items} items (E${r.easy}/A${r.average}/D${r.difficult}) | nos. ${r.item_numbers}`));}
+ return L.join("\n");
+}
+$("copy").onclick=async()=>{try{await navigator.clipboard.writeText(toText());setStatus("Copied. Paste it into Word or Google Docs.","ok")}catch(e){const r=document.createRange();r.selectNodeContents($("view"));const s=getSelection();s.removeAllRanges();s.addRange(r);setStatus("Copy was blocked. The content is selected; press Ctrl+C.")}};
+
+/* ---------- Word export ---------- */
+function D(){if(!window.docx)throw new Error("nolib");return window.docx}
+function helpers(){const {Paragraph,TextRun,TableCell,WidthType,BorderStyle,AlignmentType}=D();
+ const P=(t,o={})=>new Paragraph({children:[new TextRun({text:String(t??""),bold:o.bold,size:o.size||22,color:o.color,italics:o.it})],alignment:o.align,spacing:{after:o.after??80},pageBreakBefore:o.pb});
+ return {P,
+  H:t=>new Paragraph({children:[new TextRun({text:t,bold:true,size:26,color:"14213D"})],spacing:{before:260,after:120},border:{bottom:{style:BorderStyle.SINGLE,size:8,color:"14213D"}}}),
+  KV:(k,v)=>new Paragraph({children:[new TextRun({text:k+": ",bold:true,size:22}),new TextRun({text:String(v??""),size:22})],spacing:{after:80}}),
+  B:t=>new Paragraph({text:String(t),bullet:{level:0},spacing:{after:40}}),
+  N:(t,i)=>P(`${i+1}. ${t}`,{after:40}),
+  cell:(c,w,bold,fill)=>new TableCell({width:{size:w,type:WidthType.PERCENTAGE},shading:fill?{fill}:undefined,children:(Array.isArray(c)?c:String(c??"").split("\n")).map(x=>P(x,{bold,size:18,after:30}))}),
+  title:(label,t)=>[P("Republic of the Philippines · Department of Education",{align:AlignmentType.CENTER,size:18,color:"586379"}),P(label,{align:AlignmentType.CENTER,bold:true,size:20,color:"586379"}),P(t,{align:AlignmentType.CENTER,bold:true,size:30,after:200})]}}
+function metaTable(){const {Table,TableRow,WidthType}=D(),{cell}=helpers(),f=state.form;
+ return new Table({width:{size:100,type:WidthType.PERCENTAGE},rows:[["School",f.school,"Grade level",f.grade],["Teacher",f.teacher,"Learning area",f.area],["Term / Week",f.term+(f.week?" · Week "+f.week:""),"Sessions",`${f.sessions} × ${f.minutes} min`]].map(r=>new TableRow({children:r.map((c,i)=>cell(c,25,i%2===0))}))})}
+function pack(children,landscape){const {Document,Packer,PageOrientation}=D();
+ return Packer.toBlob(new Document({styles:{default:{document:{run:{font:"Arial",size:22}}}},sections:[{properties:{page:{size:landscape?{orientation:PageOrientation.LANDSCAPE}:undefined,margin:{top:900,bottom:900,left:900,right:900}}},children}]}))}
+
+function docPlan(){const {Table,TableRow,WidthType}=D(),{P,H,KV,B,N,cell,title}=helpers();
+ const p=state.plan,f=state.form,I=p.intentions||{},A=p.assessment||{},W=p.ways_forward||{};
+ const k=[...title("ILAW LESSON PLAN",p.title||f.topic),metaTable(),H("I — INTENTIONS"),KV("Content standard",I.content_standard),KV("Performance standard",I.performance_standard),KV("Learning competency",I.competency),P("Objectives",{bold:true}),...arr(I.objectives).map(N)];
+ if(I.big_idea)k.push(KV("Big idea",I.big_idea));if(arr(I.key_terms).length)k.push(KV("Key terms",arr(I.key_terms).join(", ")));
+ if(arr(I.materials).length)k.push(P("Materials",{bold:true}),...arr(I.materials).map(B));
+ k.push(H("L — LEARNING EXPERIENCES"));
+ arr(p.experiences).forEach(d=>{k.push(P("Session "+d.day,{bold:true,color:"1F4E8C"}),new Table({width:{size:100,type:WidthType.PERCENTAGE},rows:[new TableRow({tableHeader:true,children:[cell("Part",22,true,"E4ECF7"),cell("Time",10,true,"E4ECF7"),cell("Teacher",34,true,"E4ECF7"),cell("Learners",34,true,"E4ECF7")]}),...arr(d.steps).map(s=>new TableRow({children:[cell(s.phase,22,true),cell(s.minutes+" min",10),cell(s.teacher,34),cell(s.learners,34)]}))]}))});
+ k.push(H("A — ASSESSMENT"),P("Formative",{bold:true}),...arr(A.formative).map(B),KV("Summative",A.summative));if(arr(A.items).length)k.push(P("Sample items",{bold:true}),...arr(A.items).map(N));
+ k.push(H("W — WAYS FORWARD"),KV("Remediation",W.remediation),KV("Enrichment",W.enrichment),P("Teacher reflection",{bold:true}),...arr(W.reflection).map(B));
+ return pack(k)}
+function docDLL(){const {Table,TableRow,WidthType}=D(),{P,cell,title}=helpers();
+ const d=state.dll,f=state.form,days=arr(d.days),n=days.length,w=Math.floor(84/n);
+ const hdr=new TableRow({tableHeader:true,children:[cell("",16,true,"E4ECF7"),...days.map(x=>cell(x.label,w,true,"E4ECF7"))]});
+ const row=(name,fn)=>new TableRow({children:[cell(name,16,true,"F3F5F9"),...days.map(x=>cell(fn(x),w))]});
+ const span=(name,v)=>new TableRow({children:[cell(name,16,true,"F3F5F9"),new (D().TableCell)({columnSpan:n,width:{size:84,type:WidthType.PERCENTAGE},children:(Array.isArray(v)?v:[v]).map(x=>P(x,{size:18,after:30}))})]});
+ const num=a=>arr(a).map((x,i)=>`${i+1}. ${x}`),bul=a=>arr(a).map(x=>"• "+x);
+ const t=new Table({width:{size:100,type:WidthType.PERCENTAGE},rows:[hdr,span("I. Content standard",d.content_standard||""),span("Performance standard",d.performance_standard||""),span("Learning competencies",bul(d.competencies)),
+  row("Objectives",x=>num(x.objectives)),row("L. Topic / content",x=>x.topic||""),row("Resources",x=>bul(x.resources)),row("Learning experiences",x=>num(x.experiences)),row("A. Assessment",x=>x.assessment||""),row("W. Ways forward",x=>x.ways_forward||""),
+  span("Reflection",arr(d.reflection).map(r=>r+": ________"))]});
+ return pack([...title("DAILY LESSON LOG · ILAW FORMAT",d.title||f.topic),metaTable(),P(""),t],true)}
+function docAct(){const {Table,TableRow,WidthType}=D(),{P,B,N,cell}=helpers();const a=state.act,f=state.form;let n=0;const keys=[];
+ const k=[P(`${f.grade} · ${f.area} · ${f.term}${f.week?" · Week "+f.week:""}`,{size:18,color:"586379"}),P(a.title,{bold:true,size:32,after:60}),P(`${a.type||""} · ${a.duration||""} · ${a.grouping||""}`,{size:20,color:"586379"}),P("Objective: "+(a.objective||""),{it:true}),P("Name: ______________________   Section: __________   Score: ______",{after:160})];
+ if(arr(a.materials).length)k.push(P("Materials: "+arr(a.materials).join(", ")));
+ k.push(P("Directions",{bold:true}),...arr(a.instructions).map(N));
+ arr(a.parts).forEach(p=>{k.push(P(p.heading,{bold:true,color:"1F4E8C",size:24}));if(arr(p.word_bank).length)k.push(P("Word box: "+arr(p.word_bank).join("   •   "),{bold:true}));
+  arr(p.items).forEach(it=>{n++;keys.push(`${n}. ${it.answer||""}`);k.push(P(`${n}. ${it.q}${arr(it.choices).length?"":"  ____________________"}`,{after:40}));arr(it.choices).forEach((c,j)=>k.push(P(`      ${"abcdefgh"[j]}. ${c}`,{after:20})))})});
+ if(arr(a.rubric).length)k.push(P("Rubric",{bold:true,size:24}),new Table({width:{size:100,type:WidthType.PERCENTAGE},rows:[new TableRow({children:[cell("Criterion",25,true,"F3F5F9"),cell("Description",60,true,"F3F5F9"),cell("Points",15,true,"F3F5F9")]}),...arr(a.rubric).map(r=>new TableRow({children:[cell(r.criterion,25,true),cell(r.description,60),cell(String(r.points),15)]}))]}));
+ k.push(P("ANSWER KEY (teacher copy)",{bold:true,size:24,pb:true}),...keys.map(x=>P(x,{after:30})));
+ return pack(k)}
+
+function docQuiz(){const {Table,TableRow,WidthType,AlignmentType}=D(),{P,cell}=helpers();const q=state.quiz,f=state.form;let n=0;const keys=[];const total=quizNumbers(q).flat().length;
+ const k=[P(`${f.grade} · ${f.area} · ${f.term}${f.week?" · Week "+f.week:""}`,{size:18,color:"586379",align:AlignmentType.CENTER}),P(q.title||"Weekly Quiz",{bold:true,size:30,align:AlignmentType.CENTER,after:80}),
+  P(`${total} items${q.time?" · "+q.time:""}`,{size:20,color:"586379",align:AlignmentType.CENTER}),P(`Name: ______________________   Section: __________   Score: _____ / ${total}`,{after:140})];
+ if(q.instructions)k.push(P("General directions: "+q.instructions,{it:true}));
+ arr(q.parts).forEach(p=>{k.push(P(p.heading,{bold:true,color:"1F4E8C",size:24}));if(p.directions)k.push(P(p.directions,{it:true}));
+  if(arr(p.word_bank).length)k.push(P("Word box: "+arr(p.word_bank).join("   •   "),{bold:true}));
+  if(p.type==="matching"){const rows=Math.max(arr(p.items).length,arr(p.options).length);const its=arr(p.items).map(it=>{n++;keys.push(`${n}. ${keyText(p,it)}`);return `____ ${n}. ${it.q}`});
+   k.push(new Table({width:{size:100,type:WidthType.PERCENTAGE},rows:[new TableRow({children:[cell("Column A",60,true,"F3F5F9"),cell("Column B",40,true,"F3F5F9")]}),...Array.from({length:rows},(_,j)=>new TableRow({children:[cell(its[j]||"",60),cell(arr(p.options)[j]?LETTERS[j].toUpperCase()+". "+p.options[j]:"",40)]}))]}));return}
+  arr(p.items).forEach(it=>{n++;keys.push(`${n}. ${keyText(p,it)}`);k.push(P(`${n}. ${it.q}${arr(it.choices).length||p.type==="short"?"":"  ____________________"}`,{after:40}));
+   arr(it.choices).forEach((c,j)=>k.push(P(`      ${LETTERS[j]}. ${c}`,{after:20})));if(p.type==="short")k.push(P("______________________________________________________________"),P("______________________________________________________________"))})});
+ k.push(P("ANSWER KEY (teacher copy)",{bold:true,size:24,pb:true}),...keys.map(x=>P(x,{after:30})));
+ const t=arr(q.tos);if(t.length){const sum=c=>t.reduce((a,r)=>a+(Number(r[c])||0),0),ti=sum("items")||1;
+  k.push(P("TABLE OF SPECIFICATIONS",{bold:true,size:24,pb:true}),new Table({width:{size:10400,type:WidthType.DXA},columnWidths:[3200,800,800,900,900,1000,1000,1800],layout:D().TableLayoutType.FIXED,rows:[
+   new TableRow({tableHeader:true,children:["Topic / competency","Days","%","Items","Easy","Average","Difficult","Item no."].map((x,i)=>cell(x,i?9:30,true,"E4ECF7"))}),
+   ...t.map(r=>new TableRow({children:[r.topic,r.days,Math.round((Number(r.items)||0)/ti*100)+"%",r.items,r.easy,r.average,r.difficult,r.item_numbers].map((x,i)=>cell(String(x??""),i?9:30))})),
+   new TableRow({children:["Total",sum("days"),"100%",sum("items"),sum("easy"),sum("average"),sum("difficult"),""].map((x,i)=>cell(String(x),i?9:30,true,"F3F5F9"))})]}))}
+ return pack(k)}
+
+/* ---------- PowerPoint export ---------- */
+async function pptSlides(){
+ if(!window.PptxGenJS)throw new Error("nolib");
+ const f=state.form,pptx=new PptxGenJS();pptx.layout="LAYOUT_WIDE";pptx.title=f.topic||"Lesson";
+ const NAVY="14213D",AMB="C97D06",GREY="586379",GREEN="1E7A46",FONT="Calibri";const foot=`${f.grade} · ${f.area} · ${f.term}${f.week?" · Week "+f.week:""}`;
+ const slides=arr(state.slides.slides);const png={};
+ for(let i=0;i<slides.length;i++){if(slides[i].svg&&slides[i].kind!=="check"){try{png[i]=(await svgToPng(slides[i].svg,1200,900))}catch(e){}}}
+ let num=0;
+ const chrome=(sl,tag,bar)=>{num++;sl.background={color:"FFFFFF"};
+  sl.addShape(pptx.ShapeType.rect,{x:0,y:0,w:13.33,h:.14,fill:{color:bar||AMB},line:{color:bar||AMB}});
+  if(tag)sl.addText(tag,{x:.7,y:.38,w:10,h:.35,fontFace:FONT,fontSize:12,bold:true,color:bar||AMB,charSpacing:2});
+  sl.addText(foot,{x:.7,y:6.98,w:9,h:.35,fontFace:FONT,fontSize:11,color:GREY});
+  sl.addText(String(num),{x:12.1,y:6.98,w:.6,h:.35,fontFace:FONT,fontSize:11,color:GREY,align:"right"});};
+ const picCard=(sl,i,x,y,w)=>{const h=w*.75;sl.addShape(pptx.ShapeType.roundRect,{x:x-.12,y:y-.12,w:w+.24,h:h+.24,rectRadius:.18,fill:{color:"F3F6FB"},line:{color:"D4DAE4",width:1}});
+  sl.addImage({data:png[i],x,y,w,h});};
+ const tiles=(sl,c,reveal)=>{const n=c.ch.length,cols=n>2?2:n||1,tw=cols===2?5.85:11.9,th=n>2?1.35:1.6;
+  c.ch.forEach((o,j)=>{const col=j%cols,row=Math.floor(j/cols),x=.7+col*(tw+.2),y=3.05+row*(th+.25),[bg,st]=TILE[j%4];const right=o.l===c.ans,dim=reveal&&!right;
+   sl.addShape(pptx.ShapeType.roundRect,{x,y,w:tw,h:th,rectRadius:.15,fill:{color:reveal&&right?"DDF1EE":bg,transparency:dim?55:0},line:{color:reveal&&right?GREEN:st,width:reveal&&right?4:1.5}});
+   sl.addShape(pptx.ShapeType.ellipse,{x:x+.25,y:y+(th-.8)/2,w:.8,h:.8,fill:{color:reveal&&right?GREEN:st,transparency:dim?55:0},line:{color:"FFFFFF",width:1}});
+   sl.addText(reveal&&right?"✓":o.l,{x:x+.25,y:y+(th-.8)/2,w:.8,h:.8,fontFace:FONT,fontSize:24,bold:true,color:"FFFFFF",align:"center",valign:"middle"});
+   sl.addText(o.t,{x:x+1.25,y,w:tw-1.45,h:th,fontFace:FONT,fontSize:21,color:dim?"8A93A6":"1E2A44",valign:"middle",bold:reveal&&right});});};
+ slides.forEach((s,i)=>{
+  if(s.kind==="title"){const sl=pptx.addSlide();num++;sl.background={color:NAVY};
+   const tw=png[i]?6.6:11.2;
+   sl.addShape(pptx.ShapeType.rect,{x:.8,y:1.55,w:1.2,h:.1,fill:{color:"F0B03A"},line:{color:"F0B03A"}});
+   sl.addText(s.title||"",{x:.8,y:1.8,w:tw,h:2.6,fontFace:FONT,fontSize:png[i]?36:40,bold:true,color:"FFFFFF",valign:"top"});
+   sl.addText(arr(s.bullets).join("\n")||foot,{x:.8,y:4.45,w:tw,h:.7,fontFace:FONT,fontSize:20,color:"F0B03A"});
+   const who=[f.teacher,f.school].filter(Boolean).join(" · ");if(who)sl.addText(who,{x:.8,y:6.4,w:tw,h:.4,fontFace:FONT,fontSize:14,color:"C9D2E3"});
+   if(png[i]){sl.addShape(pptx.ShapeType.roundRect,{x:7.75,y:1.35,w:5.1,h:4.05,rectRadius:.25,fill:{color:"FFFFFF"},line:{color:"FFFFFF"}});sl.addImage({data:png[i],x:7.9,y:1.5,w:4.8,h:3.6});}
+   if(s.notes)sl.addNotes(s.notes);return;}
+  if(s.kind==="check"){const c=splitCheck(s);
+   if(c.ch.length<2){s={...s,kind:"content"}}else{
+    const sl=pptx.addSlide();chrome(sl,"CHECK YOUR UNDERSTANDING","1F4E8C");
+    sl.addText(c.q||s.title,{x:.7,y:.85,w:11.9,h:1.9,fontFace:FONT,fontSize:30,bold:true,color:NAVY,valign:"middle"});
+    tiles(sl,c,false);sl.addNotes((s.notes||"")+(c.ans?" (The next slide reveals the answer.)":""));
+    if(c.ans){const r=pptx.addSlide();chrome(r,"ANSWER",GREEN);
+     r.addText(c.q||s.title,{x:.7,y:.85,w:11.9,h:1.3,fontFace:FONT,fontSize:24,bold:true,color:NAVY,valign:"middle"});
+     const why=String(s.notes||"").replace(/^\s*answer\s*(?:is)?\s*:?\s*[A-D]\b[.)]?\s*/i,"");
+     if(why)r.addText(why,{x:.7,y:2.15,w:11.9,h:.75,fontFace:FONT,fontSize:18,italic:true,color:GREEN,valign:"middle"});
+     tiles(r,c,true);if(s.notes)r.addNotes(s.notes);}
+    return;}}
+  const sl=pptx.addSlide();const tag=s.kind==="activity"?"ACTIVITY":s.kind==="summary"?"WRAP-UP":(s.part?`${s.part} · ${(PARTNAME[s.part]||"").toUpperCase()}`:"");
+  chrome(sl,tag,s.kind==="activity"?"2A9D8F":null);
+  const has=!!png[i],tw=has?6.75:11.9,b=arr(s.bullets);
+  sl.addText(s.title||"",{x:.7,y:.8,w:tw,h:1.15,fontFace:FONT,fontSize:has?30:32,bold:true,color:NAVY,valign:"top",fit:"shrink"});
+  if(b.length){
+   if(s.kind==="activity"){b.forEach((t,j)=>{const y=2.1+j*(4.5/Math.max(b.length,3));
+     sl.addShape(pptx.ShapeType.ellipse,{x:.75,y,w:.62,h:.62,fill:{color:"2A9D8F"},line:{color:"2A9D8F"}});
+     sl.addText(String(j+1),{x:.75,y,w:.62,h:.62,fontFace:FONT,fontSize:18,bold:true,color:"FFFFFF",align:"center",valign:"middle"});
+     sl.addText(t,{x:1.6,y:y-.1,w:tw-.95,h:.82,fontFace:FONT,fontSize:b.length>4?19:22,color:"1E2A44",valign:"middle"});});}
+   else sl.addText(b.map(t=>({text:t,options:{bullet:{indent:24},breakLine:true}})),{x:.8,y:2.05,w:tw-.1,h:4.6,fontFace:FONT,fontSize:b.length>4?21:25,color:"1E2A44",valign:"top",paraSpaceAfter:12,fit:"shrink"});}
+  if(has)picCard(sl,i,7.95,1.85,4.65);
+  if(s.notes)sl.addNotes(s.notes);});
+ return pptx.write({outputType:"blob"});
+}
+
+$("dl").onclick=async()=>{
+ const dl=await window.claude?.use?.("downloads");
+ if(!dl){setStatus("Downloads are not available in this browser. Use Copy text instead.","err");return}
+ const k=state.tab,f=state.form;
+ const base=({plan:"ILAW Lesson Plan",dll:"ILAW DLL",slides:"Slides",act:"Activity",quiz:"Weekly Quiz"})[k]+" - "+(f.grade||"")+" "+(f.area||"")+" - "+((k==="plan"?state.plan.title:k==="dll"?state.dll.title:k==="act"?state.act.title:k==="quiz"?state.quiz.title:"")||f.topic||"lesson");
+ const name=base.replace(/[\\/:*?"<>|]+/g,"").replace(/\s+/g," ").slice(0,120)+(k==="slides"?".pptx":".docx");
+ try{const blob=await ({plan:docPlan,dll:docDLL,slides:pptSlides,act:docAct,quiz:docQuiz})[k]();
+  await dl.save({filename:name,data:blob});setStatus("Saved "+name,"ok");}
+ catch(e){if(e&&e.code==="declined")return;setStatus(e&&e.message==="nolib"?"The file exporter did not load. Reload the page or use Copy text.":"The download did not complete. Try again or use Copy text.","err")}
+};
+
+loadForm();render();
+</script>
+</body>
+</html>
